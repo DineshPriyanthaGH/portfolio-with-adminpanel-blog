@@ -194,7 +194,7 @@ export const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.6 }}
             >
-              Passionate about building scalable web applications, implementing robust DevOps practices, 
+              Passionate about building scalable, AI-driven web applications, software systems, implementing robust DevOps practices, 
               and leveraging AI/ML to create intelligent solutions that solve real-world problems.
             </motion.p>
 
@@ -216,6 +216,7 @@ export const HeroSection = () => {
                 variant="outline" 
                 className="professional-card border-border text-foreground hover:bg-accent px-8 py-3"
               >
+                
                 <Download className="w-5 h-5 mr-2" />
                 Download CV
               </Button>

@@ -3,14 +3,16 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import { 
-  Globe, 
-  Github, 
-  DollarSign, 
-  BarChart3, 
-  Shield, 
+import {
+  Globe,
+  Github,
+  DollarSign,
+  BarChart3,
+  Shield,
   RefreshCw,
-  ExternalLink
+  ExternalLink,
+  Users,
+  Zap,
 } from "lucide-react";
 
 export const ProjectsSection = () => {
@@ -21,74 +23,130 @@ export const ProjectsSection = () => {
       title: "FinMentor",
       category: "fullstack",
       icon: DollarSign,
-      iconColor: "text-blue-500",
-      description: "Smart Expense Tracker Web Application with real-time analytics, budget management, and financial insights powered by modern web technologies.",
-      technologies: ["React.js", "Node.js", "MongoDB", "Express.js"],
+      iconColor: "text-green-500",
+      description:
+        "Cutting-edge expense tracking application that simplifies financial management with AI-powered receipt scanning. Automatically extracts transaction details and delivers real-time financial insights for easier expense management.",
+      technologies: [
+        "JavaScript",
+        "Next.js",
+        "Tailwind CSS",
+        "PostgreSQL",
+        "Prisma",
+        "Clerk Authentication",
+      ],
       githubUrl: "https://github.com/dineshpriyantha/finmentor",
       liveUrl: "#",
       hasLiveDemo: false,
-      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2026&q=80"
+      image:
+        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2026&q=80",
     },
     {
-      title: "PriceSense", 
+      title: "PriceSense",
       category: "ai",
       icon: BarChart3,
       iconColor: "text-blue-500",
-      description: "AI-Powered Smart Price Predictor using machine learning algorithms to forecast market trends and provide accurate pricing insights.",
-      technologies: ["Python", "TensorFlow", "React.js", "FastAPI"],
+      description:
+        "AI-powered price prediction system that uses machine learning to forecast future electronic item prices. Offers real-time price trends and visual insights through an intuitive interface with multi-category support and cloud deployment.",
+      technologies: [
+        "Python",
+        "Flask",
+        "Scikit-learn",
+        "Frontend Development",
+      
+      ],
       githubUrl: "https://github.com/dineshpriyantha/pricesense",
       liveUrl: "#",
       hasLiveDemo: false,
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+      image:
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
     },
     {
-      title: "VacciCare",
-      category: "fullstack", 
-      icon: Shield,
-      iconColor: "text-blue-500",
-      description: "Comprehensive Family Vaccination Management System with appointment scheduling, medical records, and vaccination tracking capabilities.",
-      technologies: ["React.js", "Node.js", "MySQL", "Express.js"],
-      githubUrl: "https://github.com/dineshpriyantha/vaccicare",
-      liveUrl: "#",
-      hasLiveDemo: false,
-      image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"
-    },
+  title: "Ceylon Power Tracker",
+  category: "fullstack",
+  icon: Zap,
+  iconColor: "text-yellow-500",
+  description:
+    "AI-powered web app for Sri Lankan households to monitor electricity usage and costs. Features include manual meter input with accurate CEB tariff calculations, appliance-level tracking, AI insights and bill predictions, cost-saving tips, bill history, anomaly alerts, and an integrated Gemini-powered chatbot. Future-ready logic is included for SMS-based bill retrieval and IoT/mobile integration. Cloud deployed for maximum scalability and accessibility.",
+  technologies: [
+  "Next.js",
+  "Tailwind CSS",
+  "Node.js",
+  "Scikit-learn",
+  "MongoDB",
+  
+  "Email APIs",
+  
+  "Google Gemini API",
+  "AWS",
+  "Visual Studio Code",
+  "Git & GitHub",
+  "Postman",
+  "MongoDB Atlas"
+]
+,
+  githubUrl: "https://github.com/dineshpriyantha/ceylon-power-tracker", // Update if your actual repo is different.
+  liveUrl: "#",
+  hasLiveDemo: false,
+  image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80",
+  isOngoing: true // Mark as ongoing for badge display
+}
+,
     {
-      title: "EcoTracker",
+  title: "VacciCare Mobile App",
+  category: "fullstack",
+  icon: Shield,
+  iconColor: "text-purple-500",
+  description:
+    "Family Vaccination Management System to streamline the management of family and pet vaccination records. Features include family and doctor dashboards, member and pet profiles, vaccination tracking, and automatic notification reminders.",
+  technologies: [
+    "Flutter",
+    "Dart",
+    "Firebase (Authentication, Firestore, Cloud Functions)",
+    "Figma",
+  ],
+  githubUrl: "https://github.com/dineshpriyantha/vaccicare",
+  liveUrl: "#",
+  hasLiveDemo: false,
+  image:
+    "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80",
+  timePeriod: "May 2024 - Jul 2024",
+  associatedWith: "Sabaragamuwa University of Sri Lanka",
+  contributions: [
+    "Developed features for adding and managing family members and pets.",
+    "Implemented Firebase integration for real-time database management and authentication.",
+    "Created a notification system to remind users about upcoming vaccinations.",
+  ],
+  skills: ["Flutter", "Dart", "Firebase", "UI/UX Design", "Team Collaboration"],
+}
+,
+    {
+      title: "ElevateHire AI",
       category: "fullstack",
-      icon: Globe,
-      iconColor: "text-blue-500",
-      description: "Environmental Impact Tracking Platform for monitoring carbon footprint, sustainability metrics, and eco-friendly lifestyle recommendations.",
-      technologies: ["Next.js", "TypeScript", "PostgreSQL", "Prisma"],
+      icon: Users,
+      iconColor: "text-indigo-500",
+      description:
+        "Ongoing. Intelligent interview analysis and candidate evaluation platform leveraging AI for video interview processing, automated scoring, and actionable hiring insights. Features video upload and analysis, AI-powered candidate scoring, reporting, and analytics dashboards.",
+      technologies: [
+        "Django 5.2.4",
+        "Django REST Framework",
+        "PostgreSQL",
+        "Celery",
+        "Redis",
+        "JWT Authentication",
+        "Next.js 15",
+        "TypeScript",
+        "Tailwind CSS",
+        "Docker",
+        "React",
+      ],
       githubUrl: "#",
       liveUrl: "#",
       hasLiveDemo: false,
-      image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"
+      image:
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2015&q=80",
+      isOngoing: true,
     },
-    {
-      title: "SmartAnalytics",
-      category: "ai",
-      icon: BarChart3,
-      iconColor: "text-blue-500",
-      description: "Advanced Data Analytics Platform with machine learning capabilities for business intelligence and predictive analytics.",
-      technologies: ["Python", "Pandas", "Scikit-learn", "Streamlit"],
-      githubUrl: "#",
-      liveUrl: "#",
-      hasLiveDemo: false,
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80"
-    },
-    {
-      title: "DevConnect",
-      category: "fullstack",
-      icon: RefreshCw,
-      iconColor: "text-blue-500",
-      description: "Professional networking platform for developers with project collaboration, skill matching, and career opportunities.",
-      technologies: ["React.js", "Node.js", "GraphQL", "MongoDB"],
-      githubUrl: "#",
-      liveUrl: "#",
-      hasLiveDemo: false,
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"
-    }
+    // You can add further projects below as needed with the same format
   ];
 
   const filterCategories = [
@@ -97,15 +155,16 @@ export const ProjectsSection = () => {
     { id: "ai", label: "AI/ML" },
   ];
 
-  const filteredProjects = activeFilter === "all" 
-    ? projects 
-    : projects.filter(project => project.category === activeFilter);
+  const filteredProjects =
+    activeFilter === "all"
+      ? projects
+      : projects.filter((project) => project.category === activeFilter);
 
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-6">
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -121,7 +180,7 @@ export const ProjectsSection = () => {
         </motion.div>
 
         {/* Filter Buttons */}
-        <motion.div 
+        <motion.div
           className="flex flex-wrap justify-center mb-12 gap-4"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -133,8 +192,8 @@ export const ProjectsSection = () => {
               key={category.id}
               variant={activeFilter === category.id ? "default" : "outline"}
               className={`px-6 py-3 font-semibold transition-all duration-300 ${
-                activeFilter === category.id 
-                  ? "professional-button" 
+                activeFilter === category.id
+                  ? "professional-button"
                   : "professional-card text-muted-foreground hover:text-blue-500"
               }`}
               onClick={() => setActiveFilter(category.id)}
@@ -155,11 +214,11 @@ export const ProjectsSection = () => {
               viewport={{ once: true }}
               whileHover={{ y: -10 }}
             >
-              <Card className="professional-card h-full overflow-hidden group">
+              <Card className="professional-card h-full overflow-hidden group relative">
                 {/* Project Image */}
                 <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={project.image} 
+                  <img
+                    src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
@@ -172,32 +231,34 @@ export const ProjectsSection = () => {
                       {project.category === "fullstack" ? "Full Stack" : "AI/ML"}
                     </Badge>
                   </div>
+                  {project.isOngoing && (
+                    <div className="absolute top-4 left-4 z-20">
+                      <span className="bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg select-none">
+                        Ongoing
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-6">
                   {/* Project Title */}
-                  <h3 className="text-xl font-bold text-foreground mb-3">
-                    {project.title}
-                  </h3>
-
+                  <h3 className="text-xl font-bold text-foreground mb-3">{project.title}</h3>
                   {/* Project Description */}
                   <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
                     {project.description}
                   </p>
-
                   {/* Technologies */}
                   <div className="flex flex-wrap gap-2 mb-6">
                     {project.technologies.map((tech, techIndex) => (
-                      <Badge 
-                        key={techIndex} 
-                        variant="outline" 
+                      <Badge
+                        key={techIndex}
+                        variant="outline"
                         className="text-xs text-blue-500 border-blue-500/20"
                       >
                         {tech}
                       </Badge>
                     ))}
                   </div>
-
                   {/* Action Buttons */}
                   <div className="flex space-x-3">
                     <Button
@@ -211,7 +272,6 @@ export const ProjectsSection = () => {
                         GitHub
                       </a>
                     </Button>
-                    
                     {project.hasLiveDemo && (
                       <Button
                         size="sm"
@@ -242,12 +302,12 @@ export const ProjectsSection = () => {
           <p className="text-lg text-muted-foreground mb-6">
             Interested in working together on your next project?
           </p>
-          <Button 
+          <Button
             className="professional-button px-8 py-3"
             onClick={() => {
-              const contactSection = document.getElementById('contact');
+              const contactSection = document.getElementById("contact");
               if (contactSection) {
-                contactSection.scrollIntoView({ behavior: 'smooth' });
+                contactSection.scrollIntoView({ behavior: "smooth" });
               }
             }}
           >
@@ -258,3 +318,5 @@ export const ProjectsSection = () => {
     </section>
   );
 };
+
+export default ProjectsSection;
