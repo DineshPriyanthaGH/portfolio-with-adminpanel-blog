@@ -10,13 +10,12 @@ export const HeroSection = () => {
   const [typewriterText, setTypewriterText] = useState("");
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
   
-  const roles = [
+   const roles = [
     "Full Stack Developer",
-    "DevOps Engineer", 
-    "AI/ML Engineer",
-    "Software Architect"
-  ];
+    "DevOps Enthusiast",
+    "AI/ML Enthusiast"
 
+  ];
   useEffect(() => {
     let index = 0;
     const currentRole = roles[currentRoleIndex];
