@@ -6,11 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { BlogArticle } from "@/components/ui/blog-article";
+import { RichBlogArticle } from "@/components/ui/rich-blog-article";
 import { EmailSubscription } from "@/components/ui/email-subscription";
 import { LocationTimeDisplay } from "@/components/ui/location-time-display";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { NotificationStatus } from "@/components/ui/notification-status";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { blogManager } from "@/lib/blogManager";
 
 const blogPosts = [
   {
@@ -68,13 +70,23 @@ const BlogPageWithSlider = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [expandedPosts, setExpandedPosts] = useState<number[]>([]);
   const [selectedPost, setSelectedPost] = useState<number | null>(null);
+  const [dynamicPosts, setDynamicPosts] = useState<any[]>([]);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  // Get all unique tags
-  const allTags = Array.from(new Set(blogPosts.flatMap(post => post.tags)));
+  // Load dynamic blog posts from blog manager
+  useEffect(() => {
+    const posts = blogManager.getAllBlogs();
+    setDynamicPosts(posts);
+  }, []);
+
+  // Combine static and dynamic posts
+  const allPosts = [...dynamicPosts, ...blogPosts];
+
+  // Get all unique tags from both static and dynamic posts
+  const allTags = Array.from(new Set(allPosts.flatMap(post => post.tags)));
 
   // Filter posts based on search and tags
-  const filteredPosts = blogPosts.filter(post => {
+  const filteredPosts = allPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesTags = selectedTags.length === 0 || 
@@ -188,7 +200,7 @@ const BlogPageWithSlider = () => {
                 className="flex space-x-4 overflow-x-auto scrollbar-hide scroll-smooth"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                {blogPosts.map((post) => (
+                {allPosts.map((post) => (
                   <motion.div
                     key={post.id}
                     className="flex-shrink-0 w-80 cursor-pointer"
@@ -271,7 +283,7 @@ const BlogPageWithSlider = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
-                    <BlogArticle
+                    <RichBlogArticle
                       post={post}
                       isExpanded={expandedPosts.includes(post.id)}
                       onToggleExpand={() => togglePostExpansion(post.id)}

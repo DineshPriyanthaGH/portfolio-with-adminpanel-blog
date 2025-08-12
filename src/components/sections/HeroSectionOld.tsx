@@ -111,6 +111,86 @@ export const HeroSection = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
+              <motion.div 
+            className="relative flex justify-center lg:justify-end"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <div className="relative">
+              {/* Main Profile Container */}
+              <motion.div 
+                className="relative w-80 h-80 md:w-96 md:h-96"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Background Pattern */}
+                <div className="absolute inset-0 bg-primary/10 rounded-3xl rotate-6 animate-pulse-professional" />
+                <div className="absolute inset-0 bg-accent rounded-3xl -rotate-6" />
+                
+                {/* Profile Image */}
+                <div className="relative w-full h-full bg-card rounded-3xl overflow-hidden shadow-xl border border-border">
+                  <img 
+                    src="/src/assets/hizkia-portrait.jpg" 
+                    alt="Dinesh Priyantha"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // Fallback if image doesn't exist
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = target.nextElementSibling as HTMLElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                  {/* Fallback Avatar */}
+                  <div className="absolute inset-0 bg-primary/20 rounded-3xl flex items-center justify-center text-6xl font-bold text-primary" style={{ display: 'none' }}>
+                    DP
+                  </div>
+                </div>
+
+                {/* Floating Tech Badges */}
+                <motion.div
+                  className="absolute -top-4 -right-4 bg-card border border-border rounded-xl p-3 shadow-lg"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 2.2 }}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <FaReact className="w-8 h-8 text-blue-500" />
+                </motion.div>
+
+                <motion.div
+                  className="absolute -bottom-4 -left-4 bg-card border border-border rounded-xl p-3 shadow-lg"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 2.4 }}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <SiTensorflow className="w-8 h-8 text-orange-600" />
+                </motion.div>
+
+                <motion.div
+                  className="absolute top-1/4 -left-6 bg-card border border-border rounded-xl p-3 shadow-lg"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 2.6 }}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <FaDocker className="w-8 h-8 text-blue-600" />
+                </motion.div>
+
+                <motion.div
+                  className="absolute top-3/4 -right-6 bg-card border border-border rounded-xl p-3 shadow-lg"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 2.8 }}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <FaAws className="w-8 h-8 text-orange-500" />
+                </motion.div>
+              </motion.div>
+            </div>
+          </motion.div>
           <motion.div 
             className="space-y-8"
             initial={{ opacity: 0, x: -50 }}
@@ -247,86 +327,7 @@ export const HeroSection = () => {
           </motion.div>
 
           {/* Right Content - Profile Image with Modern Design */}
-          <motion.div 
-            className="relative flex justify-center lg:justify-end"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <div className="relative">
-              {/* Main Profile Container */}
-              <motion.div 
-                className="relative w-80 h-80 md:w-96 md:h-96"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Background Pattern */}
-                <div className="absolute inset-0 bg-primary/10 rounded-3xl rotate-6 animate-pulse-professional" />
-                <div className="absolute inset-0 bg-accent rounded-3xl -rotate-6" />
-                
-                {/* Profile Image */}
-                <div className="relative w-full h-full bg-card rounded-3xl overflow-hidden shadow-xl border border-border">
-                  <img 
-                    src="/src/assets/hizkia-portrait.jpg" 
-                    alt="Dinesh Priyantha"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // Fallback if image doesn't exist
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      const fallback = target.nextElementSibling as HTMLElement;
-                      if (fallback) fallback.style.display = 'flex';
-                    }}
-                  />
-                  {/* Fallback Avatar */}
-                  <div className="absolute inset-0 bg-primary/20 rounded-3xl flex items-center justify-center text-6xl font-bold text-primary" style={{ display: 'none' }}>
-                    DP
-                  </div>
-                </div>
-
-                {/* Floating Tech Badges */}
-                <motion.div
-                  className="absolute -top-4 -right-4 bg-card border border-border rounded-xl p-3 shadow-lg"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 2.2 }}
-                  whileHover={{ scale: 1.1 }}
-                >
-                  <FaReact className="w-8 h-8 text-blue-500" />
-                </motion.div>
-
-                <motion.div
-                  className="absolute -bottom-4 -left-4 bg-card border border-border rounded-xl p-3 shadow-lg"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 2.4 }}
-                  whileHover={{ scale: 1.1 }}
-                >
-                  <SiTensorflow className="w-8 h-8 text-orange-600" />
-                </motion.div>
-
-                <motion.div
-                  className="absolute top-1/4 -left-6 bg-card border border-border rounded-xl p-3 shadow-lg"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 2.6 }}
-                  whileHover={{ scale: 1.1 }}
-                >
-                  <FaDocker className="w-8 h-8 text-blue-600" />
-                </motion.div>
-
-                <motion.div
-                  className="absolute top-3/4 -right-6 bg-card border border-border rounded-xl p-3 shadow-lg"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 2.8 }}
-                  whileHover={{ scale: 1.1 }}
-                >
-                  <FaAws className="w-8 h-8 text-orange-500" />
-                </motion.div>
-              </motion.div>
-            </div>
-          </motion.div>
+      
         </div>
 
         {/* Scroll Down Indicator */}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,6 +15,8 @@ import { NotificationStatus } from '@/components/ui/notification-status';
 import { EmailJSSetup } from '@/components/ui/emailjs-setup';
 import { EmailSetupGuide } from '@/components/ui/email-setup-guide';
 import { EmailConfigStatus } from '@/components/ui/email-config-status';
+import { RichBlogEditor } from '@/components/ui/rich-blog-editor';
+import { blogManager } from '@/lib/blogManager';
 import { emailService } from '@/lib/emailService';
 import { realEmailService } from '@/lib/realEmailService';
 
@@ -219,84 +222,107 @@ const AdminPage = () => {
                 </Alert>
               )}
 
-              {/* Blog Form */}
-              <Card className="professional-card">
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Plus className="w-5 h-5 text-blue-500" />
-                    <span>Publish New Blog Post</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-4">
-                    <Input
-                      placeholder="Blog Title"
-                      value={blogForm.title}
-                      onChange={(e) => handleInputChange('title', e.target.value)}
-                      className="professional-card"
-                    />
-                    
-                    <Input
-                      placeholder="Read Time (e.g., 5 min read)"
-                      value={blogForm.readTime}
-                      onChange={(e) => handleInputChange('readTime', e.target.value)}
-                      className="professional-card"
-                    />
-                    
-                    <Textarea
-                      placeholder="Blog Excerpt (summary for email notifications)"
-                      value={blogForm.excerpt}
-                      onChange={(e) => handleInputChange('excerpt', e.target.value)}
-                      className="professional-card min-h-[100px]"
-                    />
-                    
-                    <Textarea
-                      placeholder="Blog Content"
-                      value={blogForm.content}
-                      onChange={(e) => handleInputChange('content', e.target.value)}
-                      className="professional-card min-h-[200px]"
-                    />
-                    
-                    <Input
-                      placeholder="Tags (comma separated)"
-                      value={blogForm.tags}
-                      onChange={(e) => handleInputChange('tags', e.target.value)}
-                      className="professional-card"
-                    />
-                    
-                    <Input
-                      placeholder="Featured Image URL"
-                      value={blogForm.image}
-                      onChange={(e) => handleInputChange('image', e.target.value)}
-                      className="professional-card"
-                    />
-                  </div>
+              {/* Rich Blog Editor */}
+              <RichBlogEditor
+                onSave={(blog) => {
+                  // Convert rich blog to traditional format for storage
+                  const richContentText = blog.sections.map(section => {
+                    switch (section.type) {
+                      case 'heading1': return `# ${section.content}`;
+                      case 'heading2': return `## ${section.content}`;
+                      case 'heading3': return `### ${section.content}`;
+                      case 'paragraph': return section.content;
+                      case 'quote': return `> ${section.content}`;
+                      case 'code': return `\`\`\`\n${section.content}\n\`\`\``;
+                      case 'list': return section.listItems?.map(item => `• ${item}`).join('\n') || '';
+                      case 'image': return section.imageUrl ? `![${section.imageAlt || ''}](${section.imageUrl})` : '';
+                      default: return section.content;
+                    }
+                  }).join('\n\n');
 
-                  <div className="flex flex-col space-y-4">
-                    <Button
-                      onClick={handlePublishBlog}
-                      disabled={isPublishing || !blogForm.title || !blogForm.content}
-                      className="professional-button w-full"
-                    >
-                      {isPublishing ? (
-                        <div className="flex items-center space-x-2">
-                          <div className="animate-spin w-4 h-4 border-2 border-current border-t-transparent rounded-full" />
-                          <span>Publishing & Sending Notifications...</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center space-x-2">
-                          <Send className="w-4 h-4" />
-                          <span>Publish & Notify {subscriberCount} Subscribers</span>
-                        </div>
-                      )}
-                    </Button>
+                  const blogPost = {
+                    title: blog.title,
+                    content: richContentText,
+                    richContent: blog.sections,
+                    excerpt: blog.excerpt,
+                    readTime: blog.readTime,
+                    tags: blog.tags,
+                    image: blog.featuredImage,
+                    author: 'Dinesh Priyantha',
+                    date: new Date().toLocaleDateString()
+                  };
 
-                    <p className="text-sm text-muted-foreground text-center">
-                      Publishing will send email notifications to all subscribers
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+                  // Save as draft (you can implement draft storage)
+                  localStorage.setItem('blogDraft', JSON.stringify(blogPost));
+                  alert('Blog saved as draft!');
+                }}
+                onPublish={async (blog) => {
+                  setIsPublishing(true);
+                  setPublishStatus('idle');
+
+                  try {
+                    // Convert rich blog to traditional format for storage
+                    const richContentText = blog.sections.map(section => {
+                      switch (section.type) {
+                        case 'heading1': return `# ${section.content}`;
+                        case 'heading2': return `## ${section.content}`;
+                        case 'heading3': return `### ${section.content}`;
+                        case 'paragraph': return section.content;
+                        case 'quote': return `> ${section.content}`;
+                        case 'code': return `\`\`\`\n${section.content}\n\`\`\``;
+                        case 'list': return section.listItems?.map(item => `• ${item}`).join('\n') || '';
+                        case 'image': return section.imageUrl ? `![${section.imageAlt || ''}](${section.imageUrl})` : '';
+                        default: return section.content;
+                      }
+                    }).join('\n\n');
+
+                    const blogPost = {
+                      title: blog.title,
+                      content: richContentText,
+                      richContent: blog.sections,
+                      excerpt: blog.excerpt,
+                      readTime: blog.readTime,
+                      tags: blog.tags,
+                      image: blog.featuredImage,
+                      author: 'Dinesh Priyantha',
+                      date: new Date().toLocaleDateString()
+                    };
+
+                    const success = blogManager.addNewBlog(blogPost);
+
+                    if (success) {
+                      setPublishStatus('success');
+                      
+                      // Send blog notification
+                      const blogData = {
+                        title: blog.title,
+                        excerpt: blog.excerpt,
+                        date: new Date().toLocaleDateString(),
+                        readTime: blog.readTime,
+                        author: 'Dinesh Priyantha',
+                        blogUrl: `${window.location.origin}/blog`
+                      };
+
+                      if (useRealEmails) {
+                        await realEmailService.sendBlogNotificationToSubscribers(blogData);
+                      } else {
+                        emailService.sendBlogNotificationToSubscribers(blogData);
+                      }
+
+                      // Clear draft
+                      localStorage.removeItem('blogDraft');
+                    } else {
+                      setPublishStatus('error');
+                    }
+                  } catch (error) {
+                    console.error('Error publishing blog:', error);
+                    setPublishStatus('error');
+                  } finally {
+                    setIsPublishing(false);
+                  }
+                }}
+                isPublishing={isPublishing}
+              />
 
               {/* Quick Actions */}
               <Card className="professional-card">

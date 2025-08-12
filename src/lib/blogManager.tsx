@@ -1,10 +1,20 @@
 import { emailService } from '@/lib/emailService';
 import { realEmailService } from '@/lib/realEmailService';
 
+interface BlogSection {
+  id: string;
+  type: 'heading1' | 'heading2' | 'heading3' | 'paragraph' | 'image' | 'quote' | 'code' | 'list';
+  content: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  listItems?: string[];
+}
+
 interface BlogPost {
   id: number;
   title: string;
-  content: string;
+  content: string; // Keep for backward compatibility
+  richContent?: BlogSection[]; // New rich content format
   excerpt: string;
   date: string;
   readTime: string;

@@ -215,6 +215,12 @@ export const HeroSection = () => {
               <Button 
                 variant="outline" 
                 className="professional-card border-border text-foreground hover:bg-accent px-8 py-3"
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = '/Dinesh_Priyantha_CV.pdf';
+                  link.download = 'Dinesh_Priyantha_CV.pdf';
+                  link.click();
+                }}
               >
                 
                 <Download className="w-5 h-5 mr-2" />
@@ -251,79 +257,87 @@ export const HeroSection = () => {
             className="relative flex justify-center lg:justify-end"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.8 }}
           >
             <div className="relative">
-              {/* Main Profile Container */}
-              <motion.div 
+              {/* Main Profile Image */}
+              <motion.div
                 className="relative w-80 h-80 md:w-96 md:h-96"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 1, delay: 0.5 }}
               >
-                {/* Background Pattern */}
-                <div className="absolute inset-0 bg-primary/10 rounded-3xl rotate-6 animate-pulse-professional" />
-                <div className="absolute inset-0 bg-accent rounded-3xl -rotate-6" />
+                {/* Background decoration */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-3xl rotate-6 blur-sm" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-info/20 to-primary/20 rounded-3xl -rotate-3 blur-sm" />
                 
-                {/* Profile Image */}
-                <div className="relative w-full h-full bg-card rounded-3xl overflow-hidden shadow-xl border border-border">
+                {/* Profile Image Container */}
+                <div className="relative w-full h-full bg-background rounded-3xl overflow-hidden shadow-2xl border border-border/50">
                   <img 
-                    src="/src/assets/hizkia-portrait.jpg" 
-                    alt="Dinesh Priyantha"
+                    src="/hizkia-portrait.jpg"
+                    alt="Dinesh Priyantha - Full Stack Developer"
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      // Fallback if image doesn't exist
+                      // Fallback if image doesn't load
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';
-                      const fallback = target.nextElementSibling as HTMLElement;
-                      if (fallback) fallback.style.display = 'flex';
+                      target.parentElement!.innerHTML = `
+                        <div class="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+                          <div class="text-6xl font-bold text-primary">DP</div>
+                        </div>
+                      `;
                     }}
                   />
-                  {/* Fallback Avatar */}
-                  <div className="absolute inset-0 bg-primary/20 rounded-3xl flex items-center justify-center text-6xl font-bold text-primary" style={{ display: 'none' }}>
-                    DP
-                  </div>
+                  
+                  {/* Overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent" />
                 </div>
-
-                {/* Floating Tech Badges */}
+                
+                {/* Floating Tech Icons */}
                 <motion.div
-                  className="absolute -top-4 -right-4 bg-card border border-border rounded-xl p-3 shadow-lg"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 2.2 }}
-                  whileHover={{ scale: 1.1 }}
+                  className="absolute -top-4 -right-4 w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-primary/20"
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity }}
                 >
-                  <FaReact className="w-8 h-8 text-blue-500" />
+                  <FaReact className="w-8 h-8 text-primary" />
                 </motion.div>
-
+                
                 <motion.div
-                  className="absolute -bottom-4 -left-4 bg-card border border-border rounded-xl p-3 shadow-lg"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 2.4 }}
-                  whileHover={{ scale: 1.1 }}
+                  className="absolute -bottom-4 -left-4 w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-accent/20"
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 1 }}
                 >
-                  <SiTensorflow className="w-8 h-8 text-orange-600" />
+                  <FaNodeJs className="w-8 h-8 text-green-500" />
                 </motion.div>
-
+                
                 <motion.div
-                  className="absolute top-1/4 -left-6 bg-card border border-border rounded-xl p-3 shadow-lg"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 2.6 }}
-                  whileHover={{ scale: 1.1 }}
+                  className="absolute top-1/2 -left-8 w-12 h-12 bg-info/10 rounded-xl flex items-center justify-center backdrop-blur-sm border border-info/20"
+                  animate={{ x: [0, -5, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
                 >
-                  <FaDocker className="w-8 h-8 text-blue-600" />
+                  <FaDocker className="w-6 h-6 text-blue-600" />
                 </motion.div>
-
+                
                 <motion.div
-                  className="absolute top-3/4 -right-6 bg-card border border-border rounded-xl p-3 shadow-lg"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 2.8 }}
-                  whileHover={{ scale: 1.1 }}
+                  className="absolute top-1/4 -right-8 w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center backdrop-blur-sm border border-orange-500/20"
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, delay: 1.5 }}
                 >
-                  <FaAws className="w-8 h-8 text-orange-500" />
+                  <FaAws className="w-6 h-6 text-orange-500" />
                 </motion.div>
+              </motion.div>
+              
+              {/* Status Badge */}
+              <motion.div
+                className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-background/95 backdrop-blur-sm border border-border rounded-full px-4 py-2 shadow-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 1.5 }}
+              >
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <span className="text-sm font-medium text-foreground">Available for work</span>
+                </div>
               </motion.div>
             </div>
           </motion.div>
