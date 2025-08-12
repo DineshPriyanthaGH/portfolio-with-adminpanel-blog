@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, Plus, Send, Users, Mail, Eye, Settings, ToggleLeft, ToggleRight } from 'lucide-react';
+import { ArrowLeft, Plus, Send, Users, Mail, Eye, Settings, ToggleLeft, ToggleRight, Database } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AnimatedBackground } from '@/components/ui/animated-background';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
@@ -16,6 +16,7 @@ import { EmailJSSetup } from '@/components/ui/emailjs-setup';
 import { EmailSetupGuide } from '@/components/ui/email-setup-guide';
 import { EmailConfigStatus } from '@/components/ui/email-config-status';
 import { RichBlogEditor } from '@/components/ui/rich-blog-editor';
+import { DatabaseSetupGuide } from '@/components/ui/database-setup';
 import { blogManager } from '@/lib/blogManager';
 import { emailService } from '@/lib/emailService';
 import { realEmailService } from '@/lib/realEmailService';
@@ -34,6 +35,7 @@ const AdminPage = () => {
   const [useRealEmails, setUseRealEmails] = useState(false);
   const [showSetup, setShowSetup] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
+  const [showDatabaseSetup, setShowDatabaseSetup] = useState(false);
 
   const currentEmailService = useRealEmails ? realEmailService : emailService;
 
@@ -175,6 +177,14 @@ const AdminPage = () => {
                 <Mail className="w-4 h-4 mr-2" />
                 {showGuide ? 'Hide' : 'Show'} Setup Guide
               </Button>
+              <Button
+                variant="outline"
+                onClick={() => setShowDatabaseSetup(!showDatabaseSetup)}
+                className="professional-card"
+              >
+                <Database className="w-4 h-4 mr-2" />
+                {showDatabaseSetup ? 'Hide' : 'Show'} Database Setup
+              </Button>
             </div>
           </motion.div>
 
@@ -199,6 +209,18 @@ const AdminPage = () => {
               className="mb-8"
             >
               <EmailSetupGuide />
+            </motion.div>
+          )}
+
+          {/* Database Setup Section */}
+          {showDatabaseSetup && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-8"
+            >
+              <DatabaseSetupGuide />
             </motion.div>
           )}
 
@@ -288,7 +310,7 @@ const AdminPage = () => {
                       date: new Date().toLocaleDateString()
                     };
 
-                    const success = blogManager.addNewBlog(blogPost);
+                    const success = await blogManager.addNewBlog(blogPost);
 
                     if (success) {
                       setPublishStatus('success');

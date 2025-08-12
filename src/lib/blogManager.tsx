@@ -1,5 +1,6 @@
 import { emailService } from '@/lib/emailService';
 import { realEmailService } from '@/lib/realEmailService';
+import { db, BlogPost as DBBlogPost } from '@/lib/database';
 
 interface BlogSection {
   id: string;
@@ -27,9 +28,50 @@ interface BlogPost {
 // Blog management system for admin
 class BlogManager {
   private blogs: BlogPost[] = [];
+  private useDatabase: boolean = true; // Toggle between database and localStorage
 
   constructor() {
     this.loadBlogsFromStorage();
+    this.testDatabaseConnection();
+  }
+
+  private async testDatabaseConnection(): Promise<void> {
+    try {
+      const isConnected = await db.testConnection();
+      if (isConnected) {
+        console.log('✅ Database connected successfully');
+        this.useDatabase = true;
+        // Load blogs from database
+        await this.loadBlogsFromDatabase();
+      } else {
+        console.warn('⚠️ Database connection failed, using localStorage');
+        this.useDatabase = false;
+      }
+    } catch (error) {
+      console.warn('⚠️ Database not available, using localStorage fallback');
+      this.useDatabase = false;
+    }
+  }
+
+  private async loadBlogsFromDatabase(): Promise<void> {
+    try {
+      const dbBlogs = await db.getAllBlogPosts();
+      this.blogs = dbBlogs.map(blog => ({
+        id: blog.id || Date.now(),
+        title: blog.title,
+        content: blog.content,
+        richContent: blog.rich_content,
+        excerpt: blog.excerpt,
+        date: blog.date,
+        readTime: blog.read_time,
+        author: blog.author,
+        tags: blog.tags,
+        likes: blog.likes,
+        image: blog.image
+      }));
+    } catch (error) {
+      console.error('Error loading blogs from database:', error);
+    }
   }
 
   private loadBlogsFromStorage(): void {
@@ -52,7 +94,7 @@ class BlogManager {
   }
 
   // Add new blog post and notify subscribers
-  addNewBlog(blogData: Omit<BlogPost, 'id' | 'likes'>): boolean {
+  async addNewBlog(blogData: Omit<BlogPost, 'id' | 'likes'>): Promise<boolean> {
     try {
       const newBlog: BlogPost = {
         ...blogData,
@@ -60,8 +102,32 @@ class BlogManager {
         likes: 0
       };
 
-      this.blogs.unshift(newBlog); // Add to beginning of array
-      this.saveBlogsToStorage();
+      if (this.useDatabase) {
+        // Save to database
+        const dbBlog = await db.createBlogPost({
+          title: newBlog.title,
+          content: newBlog.content,
+          rich_content: newBlog.richContent,
+          excerpt: newBlog.excerpt,
+          date: newBlog.date,
+          read_time: newBlog.readTime,
+          author: newBlog.author,
+          tags: newBlog.tags,
+          likes: newBlog.likes,
+          image: newBlog.image
+        });
+
+        if (dbBlog) {
+          newBlog.id = dbBlog.id!;
+          this.blogs.unshift(newBlog);
+        } else {
+          throw new Error('Failed to save to database');
+        }
+      } else {
+        // Fallback to localStorage
+        this.blogs.unshift(newBlog);
+        this.saveBlogsToStorage();
+      }
 
       // Send notifications to all subscribers
       this.notifySubscribersOfNewBlog(newBlog);
@@ -69,6 +135,22 @@ class BlogManager {
       return true;
     } catch (error) {
       console.error('Error adding new blog:', error);
+      
+      // Fallback to localStorage if database fails
+      if (this.useDatabase) {
+        console.log('Falling back to localStorage...');
+        const newBlog: BlogPost = {
+          ...blogData,
+          id: Date.now(),
+          likes: 0
+        };
+        
+        this.blogs.unshift(newBlog);
+        this.saveBlogsToStorage();
+        this.notifySubscribersOfNewBlog(newBlog);
+        return true;
+      }
+      
       return false;
     }
   }
