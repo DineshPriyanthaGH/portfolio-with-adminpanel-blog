@@ -12,6 +12,7 @@ import {
   User,
   ExternalLink 
 } from 'lucide-react';
+import { supabaseBlogService } from '@/lib/supabaseBlogService';
 
 interface BlogSection {
   id: string;
@@ -51,11 +52,38 @@ export const RichBlogArticle: React.FC<RichBlogArticleProps> = ({
 }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likes);
+  const [isLiking, setIsLiking] = useState(false);
 
-  const handleLike = () => {
-    if (!isLiked) {
+  const handleLike = async () => {
+    if (isLiked || isLiking) return; // Prevent multiple clicks
+    
+    setIsLiking(true);
+    
+    try {
+      // Optimistically update UI
       setLikeCount(prev => prev + 1);
       setIsLiked(true);
+
+      // Update in database
+      const result = await supabaseBlogService.likeBlog(post.id.toString());
+      
+      if (result.success && result.data) {
+        // Sync with actual database value
+        setLikeCount(result.data.likes || 0);
+        console.log(`✅ Blog liked! New count: ${result.data.likes}`);
+      } else {
+        // Revert on error
+        setLikeCount(prev => prev - 1);
+        setIsLiked(false);
+        console.error('❌ Failed to like blog:', result.error);
+      }
+    } catch (error) {
+      // Revert on error
+      setLikeCount(prev => prev - 1);
+      setIsLiked(false);
+      console.error('❌ Error liking blog:', error);
+    } finally {
+      setIsLiking(false);
     }
   };
 
@@ -270,10 +298,11 @@ export const RichBlogArticle: React.FC<RichBlogArticleProps> = ({
                   variant="ghost"
                   size="sm"
                   onClick={handleLike}
-                  className={`transition-colors ${isLiked ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'}`}
+                  disabled={isLiking}
+                  className={`transition-colors ${isLiked ? 'text-red-500' : 'text-muted-foreground hover:text-red-500'} ${isLiking ? 'opacity-50' : ''}`}
                 >
-                  <Heart className={`w-4 h-4 mr-2 ${isLiked ? 'fill-current' : ''}`} />
-                  <span>{likeCount}</span>
+                  <Heart className={`w-4 h-4 mr-2 ${isLiked ? 'fill-current' : ''} ${isLiking ? 'animate-pulse' : ''}`} />
+                  <span>{isLiking ? '...' : likeCount}</span>
                 </Button>
                 
                 <Button

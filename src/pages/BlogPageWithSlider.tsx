@@ -136,10 +136,20 @@ const BlogPageWithSlider = () => {
     );
   };
 
-  const togglePostExpansion = (postId: number) => {
+  const togglePostExpansion = async (postId: number) => {
     setExpandedPosts(prev => 
       prev.includes(postId) ? prev.filter(id => id !== postId) : [...prev, postId]
     );
+    
+    // Track view when post is expanded
+    if (!expandedPosts.includes(postId)) {
+      try {
+        await supabaseBlogService.incrementViews(postId.toString());
+        console.log(`👁️ View tracked for post ${postId}`);
+      } catch (error) {
+        console.error('Error tracking view:', error);
+      }
+    }
   };
 
   const navigateToPost = (postId: number) => {

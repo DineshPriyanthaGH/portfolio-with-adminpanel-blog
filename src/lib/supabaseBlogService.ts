@@ -406,6 +406,121 @@ class SupabaseBlogService {
       return { success: false, error: error.message };
     }
   }
+
+  // Like/Unlike a blog post
+  async likeBlog(id: string): Promise<{ success: boolean; data?: BlogPost; error?: string }> {
+    if (!this.supabase) {
+      return this.likeBlogLocal(id);
+    }
+
+    try {
+      // First get the current blog to check current likes
+      const { data: currentBlog, error: fetchError } = await this.supabase
+        .from('blogs')
+        .select('likes')
+        .eq('id', id)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      // Increment likes by 1
+      const newLikes = (currentBlog.likes || 0) + 1;
+
+      const { data, error } = await this.supabase
+        .from('blogs')
+        .update({ 
+          likes: newLikes,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Error liking blog:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  // Increment blog views
+  async incrementViews(id: string): Promise<{ success: boolean; data?: BlogPost; error?: string }> {
+    if (!this.supabase) {
+      return this.incrementViewsLocal(id);
+    }
+
+    try {
+      // First get the current blog to check current views
+      const { data: currentBlog, error: fetchError } = await this.supabase
+        .from('blogs')
+        .select('views')
+        .eq('id', id)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      // Increment views by 1
+      const newViews = (currentBlog.views || 0) + 1;
+
+      const { data, error } = await this.supabase
+        .from('blogs')
+        .update({ 
+          views: newViews,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      return { success: true, data };
+    } catch (error) {
+      console.error('Error incrementing views:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  // Local storage versions
+  private likeBlogLocal(id: string) {
+    try {
+      const blogs = JSON.parse(localStorage.getItem('blogs') || '[]');
+      const index = blogs.findIndex(b => b.id === id);
+      
+      if (index === -1) {
+        return { success: false, error: 'Blog not found' };
+      }
+      
+      blogs[index].likes = (blogs[index].likes || 0) + 1;
+      blogs[index].updated_at = new Date().toISOString();
+      
+      localStorage.setItem('blogs', JSON.stringify(blogs));
+      return { success: true, data: blogs[index] };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
+  private incrementViewsLocal(id: string) {
+    try {
+      const blogs = JSON.parse(localStorage.getItem('blogs') || '[]');
+      const index = blogs.findIndex(b => b.id === id);
+      
+      if (index === -1) {
+        return { success: false, error: 'Blog not found' };
+      }
+      
+      blogs[index].views = (blogs[index].views || 0) + 1;
+      blogs[index].updated_at = new Date().toISOString();
+      
+      localStorage.setItem('blogs', JSON.stringify(blogs));
+      return { success: true, data: blogs[index] };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
 }
 
 export const supabaseBlogService = new SupabaseBlogService();
