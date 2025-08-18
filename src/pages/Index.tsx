@@ -4,7 +4,7 @@ import { AboutSection } from "@/components/sections/AboutSectionNew";
 import { EducationSection } from "@/components/sections/EducationSection";
 import { SkillsSection } from "@/components/sections/SkillsSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSectionNew";
-import { ContactSection } from "@/components/sections/ContactSection";
+import { ContactSection } from "@/components/sections/ContactSectionNew";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 
 const Index = () => {

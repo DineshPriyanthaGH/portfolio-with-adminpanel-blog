@@ -1,461 +1,471 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, Plus, Send, Users, Mail, Eye, Settings, ToggleLeft, ToggleRight, Database } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { AnimatedBackground } from '@/components/ui/animated-background';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
-import { NotificationStatus } from '@/components/ui/notification-status';
-import { EmailJSSetup } from '@/components/ui/emailjs-setup';
-import { EmailSetupGuide } from '@/components/ui/email-setup-guide';
-import { EmailConfigStatus } from '@/components/ui/email-config-status';
-import { RichBlogEditor } from '@/components/ui/rich-blog-editor';
-import { DatabaseSetupGuide } from '@/components/ui/database-setup';
-import { blogManager } from '@/lib/blogManager';
-import { emailService } from '@/lib/emailService';
-import { realEmailService } from '@/lib/realEmailService';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Shield, 
+  User, 
+  Lock, 
+  Settings, 
+  Database,
+  FileText,
+  Mail,
+  BarChart3,
+  LogOut,
+  Eye,
+  EyeOff,
+  BookOpen,
+  Edit,
+  Plus,
+  Users
+} from 'lucide-react';
+import BlogManagementDashboard from '@/components/ui/blog-management-dashboard';
+import { ContactMessagesManager } from '@/components/ui/contact-messages-manager';
+import SupabaseDatabaseSetup from '@/components/ui/supabase-database-setup';
+import { authService } from '@/lib/authService';
+import { supabaseBlogService } from '@/lib/supabaseBlogService';
 
 const AdminPage = () => {
-  const [blogForm, setBlogForm] = useState({
-    title: '',
-    excerpt: '',
-    content: '',
-    readTime: '',
-    tags: '',
-    image: ''
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loginForm, setLoginForm] = useState({ username: '', password: '' });
+  const [loginError, setLoginError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [activeTab, setActiveTab] = useState('blog-manager');
+  const [stats, setStats] = useState({
+    totalBlogs: 0,
+    publishedBlogs: 0,
+    draftBlogs: 0,
+    totalViews: 0
   });
-  const [isPublishing, setIsPublishing] = useState(false);
-  const [publishStatus, setPublishStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [useRealEmails, setUseRealEmails] = useState(false);
-  const [showSetup, setShowSetup] = useState(false);
-  const [showGuide, setShowGuide] = useState(false);
-  const [showDatabaseSetup, setShowDatabaseSetup] = useState(false);
 
-  const currentEmailService = useRealEmails ? realEmailService : emailService;
+  console.log('AdminPage rendering:', { isLoading, isAuthenticated });
 
-  const handleInputChange = (field: string, value: string) => {
-    setBlogForm(prev => ({ ...prev, [field]: value }));
+  useEffect(() => {
+    console.log('AdminPage useEffect triggered');
+    checkAuthentication();
+    loadStats();
+  }, []);
+
+  const checkAuthentication = async () => {
+    console.log('checkAuthentication called');
+    try {
+      const isAuth = authService.isAuthenticated();
+      console.log('Authentication status:', isAuth);
+      setIsAuthenticated(isAuth);
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      setIsAuthenticated(false);
+    } finally {
+      console.log('Setting isLoading to false');
+      setIsLoading(false);
+    }
   };
 
-  const handlePublishBlog = async () => {
-    if (!blogForm.title || !blogForm.content || !blogForm.excerpt) {
-      alert('Please fill in title, content, and excerpt');
-      return;
+  const loadStats = async () => {
+    try {
+      const result = await supabaseBlogService.getAllBlogs();
+      if (result.success && result.data) {
+        const blogs = result.data;
+        setStats({
+          totalBlogs: blogs.length,
+          publishedBlogs: blogs.filter(blog => blog.status === 'published').length,
+          draftBlogs: blogs.filter(blog => blog.status === 'draft').length,
+          totalViews: blogs.reduce((sum, blog) => sum + (blog.views || 0), 0)
+        });
+      }
+    } catch (error) {
+      console.error('Error loading stats:', error);
     }
+  };
 
-    setIsPublishing(true);
-    setPublishStatus('idle');
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+    setIsLoading(true);
 
     try {
-      // Simulate blog publishing and email sending
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Create blog notification data
-      const blogData = {
-        title: blogForm.title,
-        excerpt: blogForm.excerpt,
-        date: new Date().toLocaleDateString(),
-        readTime: blogForm.readTime || '5 min read',
-        author: 'Dinesh Priyantha',
-        blogUrl: `${window.location.origin}/blog`
-      };
-
-      // Send notifications to all subscribers
-      if (useRealEmails) {
-        await realEmailService.sendBlogNotificationToSubscribers(blogData);
-      } else {
-        emailService.sendBlogNotificationToSubscribers(blogData);
-      }
-
-      setPublishStatus('success');
-      
-      // Reset form
-      setBlogForm({
-        title: '',
-        excerpt: '',
-        content: '',
-        readTime: '',
-        tags: '',
-        image: ''
+      const result = await authService.login({
+        username: loginForm.username,
+        password: loginForm.password
       });
-
-      // Reset status after 5 seconds
-      setTimeout(() => setPublishStatus('idle'), 5000);
-
+      
+      if (result.success) {
+        setIsAuthenticated(true);
+        setLoginForm({ username: '', password: '' });
+      } else {
+        setLoginError(result.message || 'Invalid username or password');
+      }
     } catch (error) {
-      console.error('Error publishing blog:', error);
-      setPublishStatus('error');
+      console.error('Login failed:', error);
+      setLoginError('Login failed. Please try again.');
     } finally {
-      setIsPublishing(false);
+      setIsLoading(false);
     }
   };
 
-  const subscriberCount = currentEmailService.getSubscribers().length;
-  const analytics = currentEmailService.getSubscriptionAnalytics();
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      setIsAuthenticated(false);
+      setActiveTab('blog-manager');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
-  return (
-    <div className="min-h-screen bg-background">
-      <AnimatedBackground />
-      
-      <div className="relative z-10">
-        {/* Header */}
-        <header className="sticky top-0 bg-background/95 backdrop-blur-sm border-b border-border">
-          <div className="container mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <Link to="/" className="flex items-center space-x-2 text-foreground hover:text-blue-500 transition-colors">
-                <ArrowLeft className="w-5 h-5" />
-                <span className="font-medium">Back to Portfolio</span>
-              </Link>
-              <div className="flex items-center space-x-4">
-                <Link to="/blog" className="text-muted-foreground hover:text-blue-500">
-                  <Eye className="w-5 h-5" />
-                </Link>
-                <ThemeToggle />
+  const renderLoginForm = () => (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md"
+      >
+        <Card className="shadow-2xl border-0">
+          <CardHeader className="space-y-1 pb-6">
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <Shield className="w-8 h-8 text-white" />
               </div>
             </div>
-          </div>
-        </header>
-
-        <div className="container mx-auto px-6 py-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Blog <span className="text-blue-500">Admin</span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-6">
-              Manage blog posts and email notifications
+            <CardTitle className="text-2xl font-bold text-center">Admin Portal</CardTitle>
+            <p className="text-muted-foreground text-center">
+              Sign in to access the blog management system
             </p>
+            {/* Test Credentials Display */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4">
+              <p className="text-sm text-blue-800 font-medium text-center">Test Credentials</p>
+              <p className="text-xs text-blue-600 text-center mt-1">
+                Username: <code className="bg-blue-100 px-1 rounded">admindinesh</code>
+              </p>
+              <p className="text-xs text-blue-600 text-center">
+                Password: <code className="bg-blue-100 px-1 rounded">admind123</code>
+              </p>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {loginError && (
+              <Alert variant="destructive">
+                <AlertDescription>{loginError}</AlertDescription>
+              </Alert>
+            )}
             
-            {/* Email Service Toggle */}
-            <div className="flex items-center justify-center space-x-4 mb-6">
-              <span className="text-sm text-muted-foreground">Demo Emails</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setUseRealEmails(!useRealEmails)}
-                className="p-1"
-              >
-                {useRealEmails ? (
-                  <ToggleRight className="w-8 h-8 text-blue-500" />
-                ) : (
-                  <ToggleLeft className="w-8 h-8 text-gray-400" />
-                )}
-              </Button>
-              <span className="text-sm text-muted-foreground">Real Emails</span>
-              {useRealEmails && (
-                <Badge variant={realEmailService.isConfigured() ? "default" : "destructive"}>
-                  {realEmailService.isConfigured() ? "Configured" : "Setup Required"}
-                </Badge>
-              )}
-            </div>
-
-            {/* Setup Button */}
-            <div className="flex gap-4 justify-center">
-              <Button
-                variant="outline"
-                onClick={() => setShowSetup(!showSetup)}
-                className="professional-card"
-              >
-                <Settings className="w-4 h-4 mr-2" />
-                {showSetup ? 'Hide' : 'Show'} EmailJS Setup
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setShowGuide(!showGuide)}
-                className="professional-card"
-              >
-                <Mail className="w-4 h-4 mr-2" />
-                {showGuide ? 'Hide' : 'Show'} Setup Guide
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setShowDatabaseSetup(!showDatabaseSetup)}
-                className="professional-card"
-              >
-                <Database className="w-4 h-4 mr-2" />
-                {showDatabaseSetup ? 'Hide' : 'Show'} Database Setup
-              </Button>
-            </div>
-          </motion.div>
-
-          {/* EmailJS Setup Section */}
-          {showSetup && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-8"
-            >
-              <EmailJSSetup />
-            </motion.div>
-          )}
-
-          {/* Setup Guide Section */}
-          {showGuide && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-8"
-            >
-              <EmailSetupGuide />
-            </motion.div>
-          )}
-
-          {/* Database Setup Section */}
-          {showDatabaseSetup && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-8"
-            >
-              <DatabaseSetupGuide />
-            </motion.div>
-          )}
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content - Blog Publishing */}
-            <div className="lg:col-span-2 space-y-8">
-              {/* Status Messages */}
-              {publishStatus === 'success' && (
-                <Alert className="border-green-200 bg-green-50 text-green-800">
-                  <AlertDescription>
-                    ✅ Blog published successfully! Email notifications sent to {subscriberCount} subscribers.
-                  </AlertDescription>
-                </Alert>
-              )}
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="username">Username</Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="username"
+                    type="text"
+                    placeholder="Enter your username"
+                    value={loginForm.username}
+                    onChange={(e) => setLoginForm(prev => ({ ...prev, username: e.target.value }))}
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
               
-              {publishStatus === 'error' && (
-                <Alert variant="destructive">
-                  <AlertDescription>
-                    ❌ Error publishing blog. Please try again.
-                  </AlertDescription>
-                </Alert>
-              )}
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Enter your password"
+                    value={loginForm.password}
+                    onChange={(e) => setLoginForm(prev => ({ ...prev, password: e.target.value }))}
+                    className="pl-10 pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+              
+              <Button 
+                type="submit" 
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Signing in...' : 'Sign In'}
+              </Button>
+            </form>
 
-              {/* Rich Blog Editor */}
-              <RichBlogEditor
-                onSave={(blog) => {
-                  // Convert rich blog to traditional format for storage
-                  const richContentText = blog.sections.map(section => {
-                    switch (section.type) {
-                      case 'heading1': return `# ${section.content}`;
-                      case 'heading2': return `## ${section.content}`;
-                      case 'heading3': return `### ${section.content}`;
-                      case 'paragraph': return section.content;
-                      case 'quote': return `> ${section.content}`;
-                      case 'code': return `\`\`\`\n${section.content}\n\`\`\``;
-                      case 'list': return section.listItems?.map(item => `• ${item}`).join('\n') || '';
-                      case 'image': return section.imageUrl ? `![${section.imageAlt || ''}](${section.imageUrl})` : '';
-                      default: return section.content;
-                    }
-                  }).join('\n\n');
-
-                  const blogPost = {
-                    title: blog.title,
-                    content: richContentText,
-                    richContent: blog.sections,
-                    excerpt: blog.excerpt,
-                    readTime: blog.readTime,
-                    tags: blog.tags,
-                    image: blog.featuredImage,
-                    author: 'Dinesh Priyantha',
-                    date: new Date().toLocaleDateString()
-                  };
-
-                  // Save as draft (you can implement draft storage)
-                  localStorage.setItem('blogDraft', JSON.stringify(blogPost));
-                  alert('Blog saved as draft!');
-                }}
-                onPublish={async (blog) => {
-                  setIsPublishing(true);
-                  setPublishStatus('idle');
-
-                  try {
-                    // Convert rich blog to traditional format for storage
-                    const richContentText = blog.sections.map(section => {
-                      switch (section.type) {
-                        case 'heading1': return `# ${section.content}`;
-                        case 'heading2': return `## ${section.content}`;
-                        case 'heading3': return `### ${section.content}`;
-                        case 'paragraph': return section.content;
-                        case 'quote': return `> ${section.content}`;
-                        case 'code': return `\`\`\`\n${section.content}\n\`\`\``;
-                        case 'list': return section.listItems?.map(item => `• ${item}`).join('\n') || '';
-                        case 'image': return section.imageUrl ? `![${section.imageAlt || ''}](${section.imageUrl})` : '';
-                        default: return section.content;
-                      }
-                    }).join('\n\n');
-
-                    const blogPost = {
-                      title: blog.title,
-                      content: richContentText,
-                      richContent: blog.sections,
-                      excerpt: blog.excerpt,
-                      readTime: blog.readTime,
-                      tags: blog.tags,
-                      image: blog.featuredImage,
-                      author: 'Dinesh Priyantha',
-                      date: new Date().toLocaleDateString()
-                    };
-
-                    const success = await blogManager.addNewBlog(blogPost);
-
-                    if (success) {
-                      setPublishStatus('success');
-                      
-                      // Send blog notification
-                      const blogData = {
-                        title: blog.title,
-                        excerpt: blog.excerpt,
-                        date: new Date().toLocaleDateString(),
-                        readTime: blog.readTime,
-                        author: 'Dinesh Priyantha',
-                        blogUrl: `${window.location.origin}/blog`
-                      };
-
-                      if (useRealEmails) {
-                        await realEmailService.sendBlogNotificationToSubscribers(blogData);
-                      } else {
-                        emailService.sendBlogNotificationToSubscribers(blogData);
-                      }
-
-                      // Clear draft
-                      localStorage.removeItem('blogDraft');
-                    } else {
-                      setPublishStatus('error');
-                    }
-                  } catch (error) {
-                    console.error('Error publishing blog:', error);
-                    setPublishStatus('error');
-                  } finally {
-                    setIsPublishing(false);
-                  }
-                }}
-                isPublishing={isPublishing}
-              />
-
-              {/* Quick Actions */}
-              <Card className="professional-card">
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Button
-                      variant="outline"
-                      className="professional-card"
-                      onClick={() => {
-                        // Test welcome email
-                        if (useRealEmails) {
-                          realEmailService.addSubscriber('test@example.com');
-                        } else {
-                          emailService.addSubscriber('test@example.com');
-                        }
-                      }}
-                    >
-                      <Mail className="w-4 h-4 mr-2" />
-                      Test Welcome Email
-                    </Button>
-                    
-                    <Button
-                      variant="outline"
-                      className="professional-card"
-                      onClick={async () => {
-                        // Test contact form
-                        const contactData = {
-                          name: 'Test User',
-                          email: 'test@example.com',
-                          subject: 'Test Message',
-                          message: 'This is a test contact form submission.',
-                          timestamp: new Date().toLocaleString()
-                        };
-                        
-                        if (useRealEmails) {
-                          await realEmailService.sendContactFormNotification(contactData);
-                        } else {
-                          emailService.sendContactFormNotification(contactData);
-                        }
-                      }}
-                    >
-                      <Users className="w-4 h-4 mr-2" />
-                      Test Contact Email
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="pt-4 border-t">
+              <div className="text-xs text-muted-foreground text-center space-y-1">
+                <p>Demo Credentials:</p>
+                <p><strong>Username:</strong> admin</p>
+                <p><strong>Password:</strong> admin123</p>
+              </div>
             </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </div>
+  );
 
-            {/* Sidebar - Analytics & Status */}
-            <div className="space-y-8">
-              <NotificationStatus />
-              <EmailConfigStatus />
-
-              {/* Quick Stats */}
-              <Card className="professional-card">
-                <CardHeader>
-                  <CardTitle>Analytics Overview</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-3 bg-accent/50 rounded-lg">
-                      <div className="text-2xl font-bold text-blue-500">{analytics.totalSubscribers}</div>
-                      <div className="text-xs text-muted-foreground">Subscribers</div>
-                    </div>
-                    <div className="text-center p-3 bg-accent/50 rounded-lg">
-                      <div className="text-2xl font-bold text-blue-500">{analytics.totalEmailsSent}</div>
-                      <div className="text-xs text-muted-foreground">Emails Sent</div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <h4 className="font-semibold text-sm">Recent Subscribers</h4>
-                    {currentEmailService.getSubscribers().slice(-3).map((email, index) => (
-                      <div key={index} className="text-xs p-2 bg-accent/30 rounded">
-                        {email}
-                      </div>
-                    ))}
-                    {currentEmailService.getSubscribers().length === 0 && (
-                      <p className="text-xs text-muted-foreground">No subscribers yet</p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Instructions */}
-              <Card className="professional-card">
-                <CardHeader>
-                  <CardTitle className="text-sm">How It Works</CardTitle>
-                </CardHeader>
-                <CardContent className="text-xs text-muted-foreground space-y-2">
-                  <p>• <strong>Mode:</strong> {useRealEmails ? 'Real Emails via EmailJS' : 'Demo Mode (Local Logging)'}</p>
-                  <p>• Subscribers get welcome emails automatically</p>
-                  <p>• New blog posts trigger notifications to all subscribers</p>
-                  <p>• Contact forms send auto-replies and admin notifications</p>
-                  <p>• All emails are logged and can be viewed in real-time</p>
-                  <p className="font-semibold text-blue-500">Admin: dineshpriyantha200248@gmail.com</p>
-                  {useRealEmails && !realEmailService.isConfigured() && (
-                    <p className="text-red-500 font-semibold">⚠️ EmailJS setup required for real emails</p>
-                  )}
-                </CardContent>
-              </Card>
+  const renderAdminDashboard = () => (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <Shield className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-lg font-semibold">Blog Admin Dashboard</h1>
+                <p className="text-xs text-muted-foreground">Complete Blog Management System</p>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <Badge variant="secondary" className="bg-green-100 text-green-700">
+                <Database className="w-3 h-3 mr-1" />
+                {supabaseBlogService.getSupabaseStatus().isConfigured ? 'Connected' : 'Local Storage'}
+              </Badge>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                className="flex items-center gap-2"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </Button>
             </div>
           </div>
         </div>
+      </header>
+
+      {/* Stats Dashboard */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <Card className="professional-card">
+            <CardContent className="pt-6">
+              <div className="flex items-center">
+                <BookOpen className="w-8 h-8 text-blue-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">Total Blogs</p>
+                  <p className="text-2xl font-bold">{stats.totalBlogs}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="professional-card">
+            <CardContent className="pt-6">
+              <div className="flex items-center">
+                <FileText className="w-8 h-8 text-green-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">Published</p>
+                  <p className="text-2xl font-bold">{stats.publishedBlogs}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="professional-card">
+            <CardContent className="pt-6">
+              <div className="flex items-center">
+                <Edit className="w-8 h-8 text-yellow-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">Drafts</p>
+                  <p className="text-2xl font-bold">{stats.draftBlogs}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="professional-card">
+            <CardContent className="pt-6">
+              <div className="flex items-center">
+                <Eye className="w-8 h-8 text-purple-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">Total Views</p>
+                  <p className="text-2xl font-bold">{stats.totalViews}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Content */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto">
+            <TabsTrigger value="blog-manager" className="flex items-center gap-2">
+              <FileText className="w-4 h-4" />
+              <span className="hidden sm:inline">Blog Manager</span>
+            </TabsTrigger>
+            <TabsTrigger value="contact-messages" className="flex items-center gap-2">
+              <Mail className="w-4 h-4" />
+              <span className="hidden sm:inline">Messages</span>
+            </TabsTrigger>
+            <TabsTrigger value="database-setup" className="flex items-center gap-2">
+              <Database className="w-4 h-4" />
+              <span className="hidden sm:inline">Database</span>
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="flex items-center gap-2">
+              <Settings className="w-4 h-4" />
+              <span className="hidden sm:inline">Settings</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="blog-manager" className="space-y-6">
+            <BlogManagementDashboard />
+          </TabsContent>
+
+          <TabsContent value="contact-messages" className="space-y-6">
+            <ContactMessagesManager />
+          </TabsContent>
+
+          <TabsContent value="database-setup" className="space-y-6">
+            <SupabaseDatabaseSetup />
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-6">
+            <Card className="professional-card">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Settings className="w-5 h-5" />
+                  Admin Settings
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <Card className="border">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-base">Account Information</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Username:</span>
+                        <span className="font-medium">admin</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Role:</span>
+                        <Badge variant="default">Administrator</Badge>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Status:</span>
+                        <Badge variant="secondary" className="bg-green-100 text-green-700">Active</Badge>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="border">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-base">System Status</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Database:</span>
+                        <Badge variant="secondary" className={supabaseBlogService.getSupabaseStatus().isConfigured ? "bg-blue-100 text-blue-700" : "bg-yellow-100 text-yellow-700"}>
+                          {supabaseBlogService.getSupabaseStatus().isConfigured ? "Supabase" : "Local Storage"}
+                        </Badge>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Storage:</span>
+                        <Badge variant="secondary" className="bg-green-100 text-green-700">Available</Badge>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Version:</span>
+                        <span className="font-medium">v2.0.0</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="pt-6 border-t">
+                  <h3 className="text-lg font-semibold mb-4">Quick Actions</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <Button 
+                      variant="outline" 
+                      className="h-auto p-4 flex flex-col items-center gap-2"
+                      onClick={() => setActiveTab('blog-manager')}
+                    >
+                      <Plus className="w-6 h-6" />
+                      <span>Create New Blog</span>
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="h-auto p-4 flex flex-col items-center gap-2"
+                      onClick={() => setActiveTab('database-setup')}
+                    >
+                      <Database className="w-6 h-6" />
+                      <span>Setup Database</span>
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="h-auto p-4 flex flex-col items-center gap-2"
+                      onClick={loadStats}
+                    >
+                      <BarChart3 className="w-6 h-6" />
+                      <span>Refresh Stats</span>
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t">
+                  <h3 className="text-lg font-semibold mb-4">Features</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-2">
+                      <h4 className="font-semibold">Blog Management</h4>
+                      <ul className="space-y-1 text-muted-foreground">
+                        <li>• Rich text editor with markdown support</li>
+                        <li>• Image upload and management</li>
+                        <li>• SEO optimization tools</li>
+                        <li>• Draft and publish workflow</li>
+                        <li>• Tag and category management</li>
+                      </ul>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="font-semibold">Database Integration</h4>
+                      <ul className="space-y-1 text-muted-foreground">
+                        <li>• Supabase cloud database</li>
+                        <li>• Real-time data synchronization</li>
+                        <li>• Image storage and CDN</li>
+                        <li>• Automatic backups</li>
+                        <li>• LocalStorage fallback</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading admin panel...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return isAuthenticated ? renderAdminDashboard() : renderLoginForm();
 };
 
 export default AdminPage;

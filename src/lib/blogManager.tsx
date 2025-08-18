@@ -32,11 +32,13 @@ class BlogManager {
 
   constructor() {
     this.loadBlogsFromStorage();
-    this.testDatabaseConnection();
+    // Initialize database connection
+    this.initializeDatabase();
   }
 
-  private async testDatabaseConnection(): Promise<void> {
+  private async initializeDatabase(): Promise<void> {
     try {
+      console.log('🔄 Initializing database connection...');
       const isConnected = await db.testConnection();
       if (isConnected) {
         console.log('✅ Database connected successfully');
@@ -48,7 +50,7 @@ class BlogManager {
         this.useDatabase = false;
       }
     } catch (error) {
-      console.warn('⚠️ Database not available, using localStorage fallback');
+      console.warn('⚠️ Database not available, using localStorage fallback:', error);
       this.useDatabase = false;
     }
   }
@@ -57,12 +59,12 @@ class BlogManager {
     try {
       const dbBlogs = await db.getAllBlogPosts();
       this.blogs = dbBlogs.map(blog => ({
-        id: blog.id || Date.now(),
+        id: typeof blog.id === 'number' ? blog.id : Number(blog.id) || Date.now(),
         title: blog.title,
         content: blog.content,
         richContent: blog.rich_content,
         excerpt: blog.excerpt,
-        date: blog.date,
+        date: blog.published_at ?? blog.created_at ?? new Date().toISOString(),
         readTime: blog.read_time,
         author: blog.author,
         tags: blog.tags,
@@ -129,9 +131,6 @@ class BlogManager {
         this.saveBlogsToStorage();
       }
 
-      // Send notifications to all subscribers
-      this.notifySubscribersOfNewBlog(newBlog);
-
       return true;
     } catch (error) {
       console.error('Error adding new blog:', error);
@@ -147,34 +146,10 @@ class BlogManager {
         
         this.blogs.unshift(newBlog);
         this.saveBlogsToStorage();
-        this.notifySubscribersOfNewBlog(newBlog);
         return true;
       }
       
       return false;
-    }
-  }
-
-  // Send notification to all subscribers about new blog
-  private notifySubscribersOfNewBlog(blog: BlogPost): void {
-    const blogUrl = `${window.location.origin}/blog#post-${blog.id}`;
-    
-    const blogNotificationData = {
-      title: blog.title,
-      excerpt: blog.excerpt,
-      date: blog.date,
-      readTime: blog.readTime,
-      author: blog.author,
-      blogUrl: blogUrl
-    };
-
-    // Check if real email service is configured and enabled
-    const useRealEmail = localStorage.getItem('useRealEmail') === 'true';
-    
-    if (useRealEmail) {
-      realEmailService.sendBlogNotificationToSubscribers(blogNotificationData);
-    } else {
-      emailService.sendBlogNotificationToSubscribers(blogNotificationData);
     }
   }
 
@@ -189,33 +164,103 @@ class BlogManager {
   }
 
   // Update blog
-  updateBlog(id: number, updates: Partial<BlogPost>): boolean {
+  async updateBlog(id: number, updates: Partial<BlogPost>): Promise<boolean> {
     try {
-      const blogIndex = this.blogs.findIndex(blog => blog.id === id);
-      if (blogIndex === -1) return false;
+      if (this.useDatabase) {
+        // Update in database
+        const dbUpdates = {
+          title: updates.title,
+          content: updates.content,
+          rich_content: updates.richContent,
+          excerpt: updates.excerpt,
+          date: updates.date,
+          read_time: updates.readTime,
+          author: updates.author,
+          tags: updates.tags,
+          likes: updates.likes,
+          image: updates.image
+        };
 
-      this.blogs[blogIndex] = { ...this.blogs[blogIndex], ...updates };
-      this.saveBlogsToStorage();
-      return true;
+        const updatedBlog = await db.updateBlogPost(id, dbUpdates);
+        if (updatedBlog) {
+          // Update local cache
+          const blogIndex = this.blogs.findIndex(blog => blog.id === id);
+          if (blogIndex !== -1) {
+            this.blogs[blogIndex] = {
+              ...this.blogs[blogIndex],
+              ...updates
+            };
+          }
+          return true;
+        } else {
+          throw new Error('Failed to update in database');
+        }
+      } else {
+        // Fallback to localStorage
+        const blogIndex = this.blogs.findIndex(blog => blog.id === id);
+        if (blogIndex === -1) return false;
+
+        this.blogs[blogIndex] = { ...this.blogs[blogIndex], ...updates };
+        this.saveBlogsToStorage();
+        return true;
+      }
     } catch (error) {
       console.error('Error updating blog:', error);
+      
+      // Fallback to localStorage if database fails
+      if (this.useDatabase) {
+        console.log('Falling back to localStorage for update...');
+        const blogIndex = this.blogs.findIndex(blog => blog.id === id);
+        if (blogIndex === -1) return false;
+
+        this.blogs[blogIndex] = { ...this.blogs[blogIndex], ...updates };
+        this.saveBlogsToStorage();
+        return true;
+      }
+      
       return false;
     }
   }
 
   // Delete blog
-  deleteBlog(id: number): boolean {
+  async deleteBlog(id: number): Promise<boolean> {
     try {
-      const initialLength = this.blogs.length;
-      this.blogs = this.blogs.filter(blog => blog.id !== id);
-      
-      if (this.blogs.length < initialLength) {
-        this.saveBlogsToStorage();
-        return true;
+      if (this.useDatabase) {
+        // Delete from database
+        const success = await db.deleteBlogPost(id);
+        if (success) {
+          // Remove from local cache
+          this.blogs = this.blogs.filter(blog => blog.id !== id);
+          return true;
+        } else {
+          throw new Error('Failed to delete from database');
+        }
+      } else {
+        // Fallback to localStorage
+        const initialLength = this.blogs.length;
+        this.blogs = this.blogs.filter(blog => blog.id !== id);
+        
+        if (this.blogs.length < initialLength) {
+          this.saveBlogsToStorage();
+          return true;
+        }
+        return false;
       }
-      return false;
     } catch (error) {
       console.error('Error deleting blog:', error);
+      
+      // Fallback to localStorage if database fails
+      if (this.useDatabase) {
+        console.log('Falling back to localStorage for delete...');
+        const initialLength = this.blogs.length;
+        this.blogs = this.blogs.filter(blog => blog.id !== id);
+        
+        if (this.blogs.length < initialLength) {
+          this.saveBlogsToStorage();
+          return true;
+        }
+      }
+      
       return false;
     }
   }

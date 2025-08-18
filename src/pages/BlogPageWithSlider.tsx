@@ -12,7 +12,7 @@ import { LocationTimeDisplay } from "@/components/ui/location-time-display";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { NotificationStatus } from "@/components/ui/notification-status";
 import { useState, useRef, useEffect } from "react";
-import { blogManager } from "@/lib/blogManager";
+import { supabaseBlogService } from "@/lib/supabaseBlogService";
 
 const blogPosts = [
   {
@@ -71,12 +71,48 @@ const BlogPageWithSlider = () => {
   const [expandedPosts, setExpandedPosts] = useState<number[]>([]);
   const [selectedPost, setSelectedPost] = useState<number | null>(null);
   const [dynamicPosts, setDynamicPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  // Load dynamic blog posts from blog manager
+  // Load published blog posts from Supabase database
   useEffect(() => {
-    const posts = blogManager.getAllBlogs();
-    setDynamicPosts(posts);
+    const loadPublishedBlogs = async () => {
+      try {
+        console.log('🔄 Loading published blogs from database...');
+        const result = await supabaseBlogService.getAllBlogs();
+        
+        if (result.success && result.data) {
+          // Filter only published blogs and transform to expected format
+          const publishedBlogs = result.data
+            .filter(blog => blog.status === 'published')
+            .map(blog => ({
+              id: blog.id,
+              title: blog.title,
+              content: blog.content,
+              excerpt: blog.excerpt || blog.content.substring(0, 200) + '...',
+              date: blog.published_at ? new Date(blog.published_at).toISOString().split('T')[0] : blog.created_at ? new Date(blog.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+              readTime: blog.read_time || '5 min read',
+              author: blog.author,
+              tags: blog.tags || [],
+              likes: blog.likes || 0,
+              image: blog.cover_image || blog.featured_image || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+            }));
+          
+          console.log(`✅ Loaded ${publishedBlogs.length} published blogs:`, publishedBlogs.map(b => b.title));
+          setDynamicPosts(publishedBlogs);
+        } else {
+          console.warn('⚠️ Failed to load blogs from database:', result.error);
+          setDynamicPosts([]);
+        }
+      } catch (error) {
+        console.error('❌ Error loading published blogs:', error);
+        setDynamicPosts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPublishedBlogs();
   }, []);
 
   // Combine static and dynamic posts
@@ -121,6 +157,37 @@ const BlogPageWithSlider = () => {
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth'
       });
+    }
+  };
+
+  // Refresh blogs function
+  const refreshBlogs = async () => {
+    setLoading(true);
+    try {
+      const result = await supabaseBlogService.getAllBlogs();
+      
+      if (result.success && result.data) {
+        const publishedBlogs = result.data
+          .filter(blog => blog.status === 'published')
+          .map(blog => ({
+            id: blog.id,
+            title: blog.title,
+            content: blog.content,
+            excerpt: blog.excerpt || blog.content.substring(0, 200) + '...',
+            date: blog.published_at ? new Date(blog.published_at).toISOString().split('T')[0] : blog.created_at ? new Date(blog.created_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+            readTime: blog.read_time || '5 min read',
+            author: blog.author,
+            tags: blog.tags || [],
+            likes: blog.likes || 0,
+            image: blog.cover_image || blog.featured_image || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+          }));
+        
+        setDynamicPosts(publishedBlogs);
+      }
+    } catch (error) {
+      console.error('Error refreshing blogs:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -174,13 +241,29 @@ const BlogPageWithSlider = () => {
               className="relative"
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-foreground">Featured Articles</h3>
+                <h3 className="text-lg font-semibold text-foreground">
+                  Featured Articles {!loading && allPosts.length > 0 && (
+                    <span className="text-sm text-muted-foreground font-normal">
+                      ({allPosts.length} {allPosts.length === 1 ? 'article' : 'articles'})
+                    </span>
+                  )}
+                </h3>
                 <div className="flex space-x-2">
                   <Button
                     variant="outline"
                     size="sm"
                     className="professional-card"
+                    onClick={refreshBlogs}
+                    disabled={loading}
+                  >
+                    {loading ? 'Loading...' : 'Refresh'}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="professional-card"
                     onClick={() => scrollSlider('left')}
+                    disabled={loading || allPosts.length === 0}
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </Button>
@@ -189,6 +272,7 @@ const BlogPageWithSlider = () => {
                     size="sm"
                     className="professional-card"
                     onClick={() => scrollSlider('right')}
+                    disabled={loading || allPosts.length === 0}
                   >
                     <ChevronRight className="w-4 h-4" />
                   </Button>
@@ -200,32 +284,57 @@ const BlogPageWithSlider = () => {
                 className="flex space-x-4 overflow-x-auto scrollbar-hide scroll-smooth"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                {allPosts.map((post) => (
-                  <motion.div
-                    key={post.id}
-                    className="flex-shrink-0 w-80 cursor-pointer"
-                    whileHover={{ scale: 1.02 }}
-                    onClick={() => navigateToPost(post.id)}
-                  >
-                    <div className={`professional-card p-4 h-full ${selectedPost === post.id ? 'ring-2 ring-blue-500' : ''}`}>
-                      <img 
-                        src={post.image} 
-                        alt={post.title}
-                        className="w-full h-32 object-cover rounded-lg mb-3"
-                      />
-                      <h4 className="font-semibold text-foreground mb-2 line-clamp-2">
-                        {post.title}
-                      </h4>
-                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{post.date}</span>
-                        <span>{post.readTime}</span>
+                {loading ? (
+                  // Loading skeleton
+                  [1, 2, 3, 4].map((i) => (
+                    <div key={i} className="flex-shrink-0 w-80">
+                      <div className="professional-card p-4 h-full animate-pulse">
+                        <div className="w-full h-32 bg-accent rounded-lg mb-3"></div>
+                        <div className="h-4 bg-accent rounded mb-2"></div>
+                        <div className="h-4 bg-accent rounded w-3/4 mb-3"></div>
+                        <div className="flex items-center justify-between">
+                          <div className="h-3 bg-accent rounded w-16"></div>
+                          <div className="h-3 bg-accent rounded w-20"></div>
+                        </div>
                       </div>
                     </div>
-                  </motion.div>
-                ))}
+                  ))
+                ) : allPosts.length > 0 ? (
+                  allPosts.map((post) => (
+                    <motion.div
+                      key={post.id}
+                      className="flex-shrink-0 w-80 cursor-pointer"
+                      whileHover={{ scale: 1.02 }}
+                      onClick={() => navigateToPost(post.id)}
+                    >
+                      <div className={`professional-card p-4 h-full ${selectedPost === post.id ? 'ring-2 ring-blue-500' : ''}`}>
+                        <img 
+                          src={post.image} 
+                          alt={post.title}
+                          className="w-full h-32 object-cover rounded-lg mb-3"
+                        />
+                        <h4 className="font-semibold text-foreground mb-2 line-clamp-2">
+                          {post.title}
+                        </h4>
+                        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span>{post.date}</span>
+                          <span>{post.readTime}</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))
+                ) : (
+                  <div className="flex-shrink-0 w-80">
+                    <div className="professional-card p-4 h-full text-center">
+                      <div className="text-muted-foreground">
+                        No published articles yet
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </motion.div>
           </div>
@@ -275,35 +384,54 @@ const BlogPageWithSlider = () => {
 
               {/* Blog Articles */}
               <div className="space-y-8">
-                {filteredPosts.map((post, index) => (
+                {loading ? (
+                  <div className="space-y-6">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="professional-card p-6 animate-pulse">
+                        <div className="h-6 bg-accent rounded mb-4"></div>
+                        <div className="h-4 bg-accent rounded mb-2"></div>
+                        <div className="h-4 bg-accent rounded w-3/4 mb-4"></div>
+                        <div className="flex space-x-2">
+                          <div className="h-6 bg-accent rounded-full w-16"></div>
+                          <div className="h-6 bg-accent rounded-full w-20"></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : filteredPosts.length > 0 ? (
+                  filteredPosts.map((post, index) => (
+                    <motion.div
+                      key={post.id}
+                      id={`post-${post.id}`}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                    >
+                      <RichBlogArticle
+                        post={post}
+                        isExpanded={expandedPosts.includes(post.id)}
+                        onToggleExpand={() => togglePostExpansion(post.id)}
+                      />
+                    </motion.div>
+                  ))
+                ) : (
                   <motion.div
-                    key={post.id}
-                    id={`post-${post.id}`}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-center py-16"
                   >
-                    <RichBlogArticle
-                      post={post}
-                      isExpanded={expandedPosts.includes(post.id)}
-                      onToggleExpand={() => togglePostExpansion(post.id)}
-                    />
+                    <h3 className="text-2xl font-semibold text-foreground mb-4">
+                      {dynamicPosts.length === 0 ? 'No published articles yet' : 'No articles found'}
+                    </h3>
+                    <p className="text-muted-foreground">
+                      {dynamicPosts.length === 0 
+                        ? 'Published blog posts will appear here.' 
+                        : 'Try adjusting your search terms or selected tags.'
+                      }
+                    </p>
                   </motion.div>
-                ))}
+                )}
               </div>
-
-              {filteredPosts.length === 0 && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="text-center py-16"
-                >
-                  <h3 className="text-2xl font-semibold text-foreground mb-4">No articles found</h3>
-                  <p className="text-muted-foreground">
-                    Try adjusting your search terms or selected tags.
-                  </p>
-                </motion.div>
-              )}
             </div>
 
             {/* Sidebar */}

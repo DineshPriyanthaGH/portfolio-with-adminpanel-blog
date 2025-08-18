@@ -1,31 +1,43 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { 
   Mail, 
   Phone, 
   MessageSquare,
-  Send,
   Linkedin,
   Github,
   MapPin,
   Globe,
+  Code2,
+  Users,
+  Calendar,
+  Send,
   CheckCircle,
   AlertCircle
 } from "lucide-react";
 import { LocationTimeDisplay } from "@/components/ui/location-time-display";
-import { emailService } from "@/lib/emailService";
+import { ContactForm } from "@/components/ui/contact-form";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-interface ContactFormData {
+// Define the form data type
+type ContactFormData = {
   name: string;
   email: string;
   subject: string;
   message: string;
-}
+};
+
+// Dummy email service for demonstration
+const emailService = {
+  sendContactFormNotification: async (data: any) => {
+    // Simulate sending email
+    return new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+};
 
 export const ContactSection = () => {
   const [formData, setFormData] = useState<ContactFormData>({
