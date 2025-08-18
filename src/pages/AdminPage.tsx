@@ -129,25 +129,13 @@ const AdminPage = () => {
       >
         <Card className="shadow-2xl border-0">
           <CardHeader className="space-y-1 pb-6">
-            <div className="flex items-center justify-center mb-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <Shield className="w-8 h-8 text-white" />
-              </div>
-            </div>
+            
             <CardTitle className="text-2xl font-bold text-center">Admin Portal</CardTitle>
             <p className="text-muted-foreground text-center">
-              Sign in to access the blog management system
+           
             </p>
             {/* Test Credentials Display */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4">
-              <p className="text-sm text-blue-800 font-medium text-center">Test Credentials</p>
-              <p className="text-xs text-blue-600 text-center mt-1">
-                Username: <code className="bg-blue-100 px-1 rounded">admindinesh</code>
-              </p>
-              <p className="text-xs text-blue-600 text-center">
-                Password: <code className="bg-blue-100 px-1 rounded">admind123</code>
-              </p>
-            </div>
+            
           </CardHeader>
           <CardContent className="space-y-4">
             {loginError && (
@@ -205,13 +193,6 @@ const AdminPage = () => {
               </Button>
             </form>
 
-            <div className="pt-4 border-t">
-              <div className="text-xs text-muted-foreground text-center space-y-1">
-                <p>Demo Credentials:</p>
-                <p><strong>Username:</strong> admin</p>
-                <p><strong>Password:</strong> admin123</p>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </motion.div>
