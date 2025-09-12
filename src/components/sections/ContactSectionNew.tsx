@@ -44,7 +44,7 @@ export const ContactSection = () => {
       icon: Mail,
       label: "Email",
       value: "dinesh.priyantha@gmail.com",
-      link: "mailto:dinesh.priyantha@gmail.com",
+      link: "mailto:dissnsesh.priyantha@gmail.com",
       color: "text-blue-600 dark:text-blue-400",
       description: "Send me an email"
     },

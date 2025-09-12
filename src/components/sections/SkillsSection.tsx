@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
 import { Code, Server, Database, Brain, Settings, Users } from "lucide-react";
-import { FaReact, FaNodeJs, FaDocker, FaPython, FaAws, FaHtml5, FaCss3Alt, FaJs } from "react-icons/fa";
-import { SiMongodb, SiKubernetes, SiTensorflow, SiTailwindcss, SiExpress, SiMysql, SiTypescript } from "react-icons/si";
+import { FaReact, FaNodeJs, FaDocker, FaPython, FaAws, FaHtml5, FaCss3Alt, FaJs, FaJava, FaGitAlt, FaLinux } from "react-icons/fa";
+import { SiMongodb, SiKubernetes, SiTensorflow, SiTailwindcss, SiExpress, SiMysql, SiTypescript, SiPostgresql, SiFirebase, SiDjango, SiFlask, SiJenkins } from "react-icons/si";
 
 export const SkillsSection = () => {
   const [activeTab, setActiveTab] = useState("frontend");
@@ -19,46 +19,55 @@ export const SkillsSection = () => {
       skills: [
         { name: "React.js", level: 85, icon: FaReact, color: "text-blue-400" },
         { name: "Next.js", level: 80, icon: FaReact, color: "text-gray-700" },
-        { name: "Tailwind CSS", level: 90, icon: SiTailwindcss, color: "text-teal-400" },
+        { name: "TypeScript", level: 82, icon: SiTypescript, color: "text-blue-600" },
+        { name: "JavaScript", level: 88, icon: FaJs, color: "text-yellow-400" },
         { name: "HTML5", level: 95, icon: FaHtml5, color: "text-orange-500" },
         { name: "CSS3", level: 90, icon: FaCss3Alt, color: "text-blue-500" },
-        { name: "JavaScript", level: 88, icon: FaJs, color: "text-yellow-400" },
-        { name: "TypeScript", level: 75, icon: SiTypescript, color: "text-blue-600" },
+        { name: "Tailwind CSS", level: 90, icon: SiTailwindcss, color: "text-teal-400" },
       ]
     },
     backend: {
-      title: "Backend Development", 
+      title: "Backend & Languages", 
       icon: Server,
       iconColor: "text-emerald-500",
       bgColor: "bg-emerald-50 dark:bg-emerald-950",
       skills: [
+        { name: "Python", level: 85, icon: FaPython, color: "text-yellow-400" },
+        
         { name: "Node.js", level: 82, icon: FaNodeJs, color: "text-green-500" },
         { name: "Express.js", level: 80, icon: SiExpress, color: "text-gray-600" },
-        { name: "SQL", level: 85, icon: SiMysql, color: "text-blue-600" },
-        { name: "MongoDB", level: 78, icon: SiMongodb, color: "text-green-400" },
-        { name: "Python", level: 75, icon: FaPython, color: "text-yellow-400" },
+        { name: "Django", level: 75, icon: SiDjango, color: "text-green-600" },
+        { name: "Flask", level: 72, icon: SiFlask, color: "text-gray-700" },
+        { name: "Python (ML Libraries)", level: 80, icon: FaPython, color: "text-yellow-400" },
+          { name: "PostgreSQL", level: 83, icon: SiPostgresql, color: "text-blue-700" },
+        { name: "MySQL", level: 85, icon: SiMysql, color: "text-blue-600" },
+        { name: "MongoDB", level: 78, icon: SiMongodb, color: "text-green-400" }
       ]
     },
+
     devops: {
-      title: "DevOps & AI/ML",
+      title: "DevOps & Tools",
       icon: Settings, 
       iconColor: "text-violet-500",
       bgColor: "bg-violet-50 dark:bg-violet-950",
       skills: [
-        { name: "Docker", level: 70, icon: FaDocker, color: "text-blue-500" },
-        { name: "Kubernetes", level: 65, icon: SiKubernetes, color: "text-blue-600" },
-        { name: "AWS (EC2, S3)", level: 72, icon: FaAws, color: "text-orange-400" },
-        { name: "Git & Version Control", level: 88, icon: Code, color: "text-gray-600" },
-        { name: "Python (ML Libraries)", level: 70, icon: FaPython, color: "text-yellow-400" },
-        { name: "TensorFlow / Keras", level: 68, icon: SiTensorflow, color: "text-orange-500" },
+        { name: "AWS (EC2, S3)", level: 75, icon: FaAws, color: "text-orange-400" },
+        { name: "Docker", level: 78, icon: FaDocker, color: "text-blue-500" },
+        { name: "Kubernetes", level: 70, icon: SiKubernetes, color: "text-blue-600" },
+        { name: "Jenkins", level: 68, icon: SiJenkins, color: "text-red-600" },
+        { name: "Git & Version Control", level: 90, icon: FaGitAlt, color: "text-orange-600" },
+        { name: "Linux Systems", level: 75, icon: FaLinux, color: "text-gray-800" },
       ]
-    }
+    },
+  
   };
 
   const tabs = [
     { id: "frontend", label: "Frontend", icon: Code },
-    { id: "backend", label: "Backend", icon: Server },
-    { id: "devops", label: "DevOps & AI/ML", icon: Brain },
+    { id: "backend", label: "Backend & Languages", icon: Server },
+
+    { id: "devops", label: "DevOps & Tools", icon: Settings },
+   
   ];
 
   return (
@@ -77,7 +86,7 @@ export const SkillsSection = () => {
           </h2>
           <div className="w-24 h-1 bg-blue-700  mx-auto mb-6"></div>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            MERN Stack | DevOps | AI/ML
+            Full Stack Development | DevOps Engineering | Machine Learning
           </p>
         </motion.div>
 
@@ -156,32 +165,7 @@ export const SkillsSection = () => {
           </Card>
         </motion.div>
 
-        {/* Skills Summary */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg">
-              <Code className="w-12 h-12 text-blue-500 mx-auto mb-4" />
-              <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Frontend</h4>
-              <p className="text-gray-600 dark:text-gray-300">Modern React.js applications with responsive design</p>
-            </div>
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg">
-              <Server className="w-12 h-12 text-green-500 mx-auto mb-4" />
-              <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Backend</h4>
-              <p className="text-gray-600 dark:text-gray-300">Scalable APIs and database management</p>
-            </div>
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg">
-              <Brain className="w-12 h-12 text-purple-500 mx-auto mb-4" />
-              <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">DevOps & AI</h4>
-              <p className="text-gray-600 dark:text-gray-300">Cloud deployment and machine learning integration</p>
-            </div>
-          </div>
-        </motion.div>
+       
       </div>
     </section>
   );

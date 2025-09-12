@@ -13,6 +13,7 @@ import {
   ExternalLink,
   Users,
   Zap,
+  Monitor,
 } from "lucide-react";
 
 export const ProjectsSection = () => {
@@ -34,9 +35,9 @@ export const ProjectsSection = () => {
         "Prisma",
         "Clerk Authentication",
       ],
-      githubUrl: "https://github.com/dineshpriyantha/finmentor",
-      liveUrl: "#",
-      hasLiveDemo: false,
+      githubUrl: "https://github.com/DineshPriyanthaGH/finmentor-expense-tracker",
+      liveUrl: "https://finmentor-ai-powered-expense-tracker-6yd1.vercel.app/",
+      hasLiveDemo: true,
       image:
         "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2026&q=80",
     },
@@ -54,9 +55,9 @@ export const ProjectsSection = () => {
         "Frontend Development",
       
       ],
-      githubUrl: "https://github.com/dineshpriyantha/pricesense",
-      liveUrl: "#",
-      hasLiveDemo: false,
+      githubUrl: "https://github.com/DineshPriyanthaGH/pricesense-smart-electronic-item-price-predictor",
+      liveUrl: "https://github.com/DineshPriyanthaGH/pricesense-smart-electronic-item-price-predictor",
+      hasLiveDemo: true,
       image:
         "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
     },
@@ -84,11 +85,11 @@ export const ProjectsSection = () => {
   "MongoDB Atlas"
 ]
 ,
-  githubUrl: "https://github.com/dineshpriyantha/ceylon-power-tracker", // Update if your actual repo is different.
-  liveUrl: "#",
-  hasLiveDemo: false,
+  githubUrl: "https://github.com/DineshPriyanthaGH/voltbuddy-Smart-Home-Electricity-Bill-Tracker-with-AI-Insights", // Update if your actual repo is different.
+  liveUrl: "https://voltbuddy-smart-home-electricity-bi-five.vercel.app/",
+  hasLiveDemo: true,
   image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80",
-  isOngoing: true // Mark as ongoing for badge display
+  isOngoing: false // Mark as ongoing for badge display
 }
 ,
     {
@@ -104,9 +105,9 @@ export const ProjectsSection = () => {
     "Firebase (Authentication, Firestore, Cloud Functions)",
     "Figma",
   ],
-  githubUrl: "https://github.com/dineshpriyantha/vaccicare",
-  liveUrl: "#",
-  hasLiveDemo: false,
+  githubUrl: "https://github.com/DineshPriyanthaGH/project_familyvacciguard",
+  liveUrl: "https://github.com/DineshPriyanthaGH/project_familyvacciguard",
+  hasLiveDemo: true,
   image:
     "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80",
   timePeriod: "May 2024 - Jul 2024",
@@ -139,9 +140,9 @@ export const ProjectsSection = () => {
         "Docker",
         "React",
       ],
-      githubUrl: "#",
-      liveUrl: "#",
-      hasLiveDemo: false,
+      githubUrl: "https://github.com/DineshPriyanthaGH/elevatehire-ai-platform",
+      liveUrl: "https://github.com/DineshPriyanthaGH/elevatehire-ai-platform",
+      hasLiveDemo: true,
       image:
         "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2015&q=80",
       isOngoing: true,
@@ -279,7 +280,7 @@ export const ProjectsSection = () => {
                         asChild
                       >
                         <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="w-4 h-4 mr-2" />
+                          <Globe className="w-4 h-4 mr-2" />
                           Live Demo
                         </a>
                       </Button>

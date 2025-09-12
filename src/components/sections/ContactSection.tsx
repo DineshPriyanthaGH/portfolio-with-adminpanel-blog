@@ -54,7 +54,7 @@ export const ContactSection = () => {
     {
       icon: Mail,
       label: "Email",
-      value: "dinesh.priyantha@gmail.com",
+      value: "dinessshs.priyantha@gmail.com",
       link: "mailto:dinesh.priyantha@gmail.com",
       color: "text-blue-600 dark:text-blue-400",
       description: "Send me an email"
@@ -62,7 +62,7 @@ export const ContactSection = () => {
     {
       icon: Phone,
       label: "Phone",
-      value: "+94 77 123 4567",
+      value: "+94 77s 123 4567",
       link: "tel:+94771234567",
       color: "text-green-600 dark:text-green-400",
       description: "Call me directly"
