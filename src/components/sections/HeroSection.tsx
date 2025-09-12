@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Github, Linkedin, Mail, Download, ArrowDown, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
-import { FaReact, FaNodeJs, FaDocker, FaPython, FaAws } from "react-icons/fa";
+import { FaReact, FaNodeJs, FaDocker, FaPython, FaAws,FaLinux,FaGitAlt } from "react-icons/fa";
 import { SiMongodb, SiExpress, SiKubernetes, SiTensorflow, SiPython } from "react-icons/si";
+
 
 export const HeroSection = () => {
   const [typewriterText, setTypewriterText] = useState("");
@@ -39,19 +40,19 @@ export const HeroSection = () => {
   const socialLinks = [
     { 
       icon: Github, 
-      href: "https://github.com/dineshpriyantha", 
+      href: "https://github.com/DineshPriyanthaGH", 
       label: "GitHub",
       color: "hover:bg-gray-800 dark:hover:bg-gray-600"
     },
     { 
       icon: Linkedin, 
-      href: "https://linkedin.com/in/dineshpriyantha", 
+      href: "https://www.linkedin.com/in/dinesh-priyantha/", 
       label: "LinkedIn",
       color: "hover:bg-blue-600"
     },
     { 
       icon: Mail, 
-      href: "mailto:dinesh.priyantha@gmail.com", 
+      href: "mailto:dineshpriyantha200248@gmail.com", 
       label: "Email",
       color: "hover:bg-red-600"
     },
@@ -59,15 +60,18 @@ export const HeroSection = () => {
 
   const skillCategories = [
     {
-      category: "Full Stack Development",
+      category: "AI Powered Full Stack Development",
       icon: FaReact,
       skills: ["React", "Node.js", "MongoDB", "Express.js"],
       technologies: [
         { Icon: FaReact, color: "text-blue-500" },
         { Icon: FaNodeJs, color: "text-green-600" },
         { Icon: SiMongodb, color: "text-green-500" },
-        { Icon: SiExpress, color: "text-gray-600 dark:text-gray-400" }
+        { Icon: SiExpress, color: "text-gray-600 dark:text-gray-400" },
+        { Icon: SiTensorflow, color: "text-orange-600" },
+        { Icon: FaPython, color: "text-yellow-600" }
       ]
+      
     },
     {
       category: "DevOps Enthusiast",
@@ -76,17 +80,10 @@ export const HeroSection = () => {
       technologies: [
         { Icon: FaDocker, color: "text-blue-600" },
         { Icon: SiKubernetes, color: "text-blue-700" },
-        { Icon: FaAws, color: "text-orange-500" }
-      ]
-    },
-    {
-      category: "AI and ML",
-      icon: SiTensorflow,
-      skills: ["TensorFlow", "Python", "Machine Learning"],
-      technologies: [
-        { Icon: SiTensorflow, color: "text-orange-600" },
-        { Icon: FaPython, color: "text-yellow-600" },
-        { Icon: SiPython, color: "text-purple-600" }
+        { Icon: FaAws, color: "text-orange-500" },
+        { Icon: FaLinux, color: "text-black-600" },
+        { Icon: FaGitAlt, color: "text-orange-600"},
+
       ]
     }
   ];
@@ -294,37 +291,13 @@ export const HeroSection = () => {
                 </div>
                 
                 {/* Floating Tech Icons */}
-                <motion.div
-                  className="absolute -top-4 -right-4 w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-primary/20"
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  <FaReact className="w-8 h-8 text-primary" />
-                </motion.div>
                 
-                <motion.div
-                  className="absolute -bottom-4 -left-4 w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-accent/20"
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-                >
-                  <FaNodeJs className="w-8 h-8 text-green-500" />
-                </motion.div>
                 
-                <motion.div
-                  className="absolute top-1/2 -left-8 w-12 h-12 bg-info/10 rounded-xl flex items-center justify-center backdrop-blur-sm border border-info/20"
-                  animate={{ x: [0, -5, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
-                >
-                  <FaDocker className="w-6 h-6 text-blue-600" />
-                </motion.div>
                 
-                <motion.div
-                  className="absolute top-1/4 -right-8 w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center backdrop-blur-sm border border-orange-500/20"
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, delay: 1.5 }}
-                >
-                  <FaAws className="w-6 h-6 text-orange-500" />
-                </motion.div>
+                
+                
+                
+               
               </motion.div>
               
               {/* Status Badge */}

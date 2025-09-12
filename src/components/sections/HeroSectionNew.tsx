@@ -266,11 +266,18 @@ export const HeroSection = () => {
                 <div className="absolute inset-0 bg-accent rounded-3xl -rotate-6" />
                 
                 {/* Profile Image */}
-                <div className="relative w-full h-full bg-card rounded-3xl overflow-hidden shadow-xl border border-border">
+                <div className="relative w-full h-full bg-card rounded-3xl overflow-hidden shadow-2xl border border-border ring-1 ring-primary/10">
                   <img 
                     src="/src/assets/hizkia-portrait.jpg" 
                     alt="Dinesh Priyantha"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center filter-none transform-gpu"
+                    style={{
+                      imageRendering: 'crisp-edges',
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                    } as React.CSSProperties}
+                    loading="eager"
+                    decoding="sync"
                     onError={(e) => {
                       // Fallback if image doesn't exist
                       const target = e.target as HTMLImageElement;
@@ -280,9 +287,12 @@ export const HeroSection = () => {
                     }}
                   />
                   {/* Fallback Avatar */}
-                  <div className="absolute inset-0 bg-primary/20 rounded-3xl flex items-center justify-center text-6xl font-bold text-primary" style={{ display: 'none' }}>
+                  <div className="absolute inset-0 bg-primary/20 rounded-3xl flex items-center justify-center text-6xl font-bold text-primary backdrop-blur-none" style={{ display: 'none' }}>
                     DP
                   </div>
+                  
+                  {/* High-quality overlay for premium look */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent pointer-events-none" />
                 </div>
 
                 {/* Floating Tech Badges */}

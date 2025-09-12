@@ -43,32 +43,32 @@ export const ContactSection = () => {
     {
       icon: Mail,
       label: "Email",
-      value: "dinesh.priyantha@gmail.com",
-      link: "mailto:dissnsesh.priyantha@gmail.com",
+      value: "dineshpriyantha200248@gmail.com",
+      link: "mailto:dineshpriyantha200248@gmail.com",
       color: "text-blue-600 dark:text-blue-400",
       description: "Send me an email"
     },
     {
       icon: Phone,
       label: "Phone",
-      value: "+94 77 123 4567",
-      link: "tel:+94771234567",
+      value: "+94 71 922 7109",
+      link: "tel:+94719227109",
       color: "text-green-600 dark:text-green-400",
       description: "Call me directly"
     },
     {
       icon: Linkedin,
       label: "LinkedIn",
-      value: "linkedin.com/in/dineshpriyantha",
-      link: "https://linkedin.com/in/dineshpriyantha",
+      value: "https://www.linkedin.com/in/dinesh-priyantha/",     
+      link: "https://www.linkedin.com/in/dinesh-priyantha/",
       color: "text-blue-700 dark:text-blue-300",
       description: "Connect professionally"
     },
     {
       icon: Github,
       label: "GitHub",
-      value: "github.com/dineshpriyantha",
-      link: "https://github.com/dineshpriyantha",
+      value: "https://github.com/DineshPriyanthaGH",
+      link: "https://github.com/DineshPriyanthaGH",
       color: "text-gray-800 dark:text-gray-200",
       description: "View my projects"
     }

@@ -52,7 +52,7 @@ export const HeroSection = () => {
     },
     { 
       icon: Mail, 
-      href: "mailto:dinesh.priyantha@gmail.com", 
+      href: "mailto:dineshpriayntha@gmail.com", 
       label: "Email",
       color: "hover:bg-red-600"
     },
