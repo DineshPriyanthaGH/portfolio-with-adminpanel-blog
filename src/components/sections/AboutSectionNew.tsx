@@ -212,7 +212,7 @@ export const AboutSection = () => {
                 through thoughtful design and robust implementation."
               </blockquote>
               <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <a href="/src/assets/Dinesh_Priyantha_CV.pdf" download className="professional-button">
+                <a href="/IWDPriyantha_CV.pdf" download className="professional-button">
                   <Download className="w-4 h-4 mr-2" />
                   Download Resume
                 </a>

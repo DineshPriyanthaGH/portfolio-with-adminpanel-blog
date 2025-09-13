@@ -214,8 +214,8 @@ export const HeroSection = () => {
                 className="professional-card border-border text-foreground hover:bg-accent px-8 py-3"
                 onClick={() => {
                   const link = document.createElement('a');
-                  link.href = '/Dinesh_Priyantha_CV.pdf';
-                  link.download = 'Dinesh_Priyantha_CV.pdf';
+                  link.href = '/IWDPriyantha_CV.pdf';
+                  link.download = 'IWDPriyantha_CV.pdf';
                   link.click();
                 }}
               >
