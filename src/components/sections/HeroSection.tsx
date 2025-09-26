@@ -6,10 +6,78 @@ import { motion } from "framer-motion";
 import { FaReact, FaNodeJs, FaDocker, FaPython, FaAws,FaLinux,FaGitAlt } from "react-icons/fa";
 import { SiMongodb, SiExpress, SiKubernetes, SiTensorflow, SiPython } from "react-icons/si";
 
+// Circular Dots Loading Animation Component
+const LoadingAnimation = () => {
+  const dots = Array.from({ length: 8 }, (_, i) => i);
+  
+  return (
+    <div className="fixed inset-0 bg-background/98 backdrop-blur-md z-50 flex items-center justify-center">
+      <div className="relative w-24 h-24">
+        {/* Circular dots formation */}
+        {dots.map((dot, index) => {
+          const angle = (index * 45) * (Math.PI / 180); // 45 degrees apart
+          const radius = 32; // Distance from center
+          const x = Math.cos(angle) * radius;
+          const y = Math.sin(angle) * radius;
+          
+          return (
+            <motion.div
+              key={dot}
+              className="absolute w-3 h-3 rounded-full"
+              style={{
+                left: `calc(50% + ${x}px)`,
+                top: `calc(50% + ${y}px)`,
+                transform: 'translate(-50%, -50%)',
+                backgroundColor: `hsl(var(--primary))`,
+              }}
+              initial={{ 
+                scale: 0.3,
+                opacity: 0.3,
+                backgroundColor: `hsl(var(--muted-foreground) / 0.3)`
+              }}
+              animate={{
+                scale: [0.3, 1, 0.3],
+                opacity: [0.3, 1, 0.3],
+                backgroundColor: [
+                  `hsl(var(--muted-foreground) / 0.3)`,
+                  `hsl(var(--primary))`,
+                  `hsl(var(--muted-foreground) / 0.3)`
+                ]
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                delay: index * 0.15,
+                ease: "easeInOut"
+              }}
+            />
+          );
+        })}
+        
+        {/* Progress indicator */}
+        <motion.div
+          className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-muted rounded-full overflow-hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+        >
+          <motion.div
+            className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
+            initial={{ width: "0%" }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 7, ease: "linear" }}
+          />
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
 
 export const HeroSection = () => {
   const [typewriterText, setTypewriterText] = useState("");
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   
    const roles = [
     "Full Stack Developer",
@@ -36,6 +104,15 @@ export const HeroSection = () => {
 
     return () => clearInterval(typeInterval);
   }, [currentRoleIndex]);
+
+  // Loading effect - 7 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 7000); // Show loading for 7 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const socialLinks = [
     { 
@@ -96,15 +173,37 @@ export const HeroSection = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center py-20 bg-background relative overflow-hidden">
+    <>
+      {/* Loading Animation */}
+      {isLoading && <LoadingAnimation />}
+      
+      <motion.section 
+        className="min-h-screen flex items-center justify-center py-20 bg-background relative overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+      >
       {/* Professional Background Pattern */}
-      <div className="absolute inset-0 opacity-30">
+      <motion.div 
+        className="absolute inset-0 opacity-30"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 0.3 }}
+        transition={{ duration: 1, delay: 0.5 }}
+      >
         <div className="absolute inset-0 bg-grid-small-pattern opacity-20" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-info/5 rounded-full blur-3xl" />
-      </div>
+      </motion.div>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <motion.div 
+        className="container mx-auto px-6 relative z-10"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ 
+          opacity: isLoading ? 0 : 1,
+          y: isLoading ? 20 : 0
+        }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+      >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <motion.div 
@@ -271,7 +370,7 @@ export const HeroSection = () => {
                 {/* Profile Image Container */}
                 <div className="relative w-full h-full bg-background rounded-3xl overflow-hidden shadow-2xl border border-border/50">
                   <img 
-                    src="/hizkia-portrait.jpg"
+                    src="/dinesh-profile.jpg"
                     alt="Dinesh Priyantha - Full Stack Developer"
                     className="w-full h-full object-cover"
                     onError={(e) => {
@@ -337,7 +436,8 @@ export const HeroSection = () => {
             </motion.div>
           </Button>
         </motion.div>
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
+    </>
   );
 };
