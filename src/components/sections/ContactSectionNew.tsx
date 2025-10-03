@@ -195,7 +195,7 @@ export const ContactSection = () => {
             <div>
               <h3 className="text-2xl font-bold text-foreground mb-6">Get in Touch</h3>
               <p className="text-muted-foreground mb-8">
-                I'm always open to discussing new opportunities, interesting projects, 
+                I'm ways open to discussing new opportunities, interesting projects, 
                 or potential collaborations. Feel free to reach out through any of these channels.
               </p>
             </div>
