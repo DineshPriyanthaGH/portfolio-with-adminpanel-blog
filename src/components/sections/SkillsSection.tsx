@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Code, Server, Database, Cloud, Settings, Wrench } from "lucide-react";
 import { 
-  FaReact, FaNodeJs, FaDocker, FaPython, FaAws, FaJs, FaGitAlt, FaLinux, FaPhp,
-  FaNginx, FaGithub
+  FaReact, FaNodeJs, FaDocker, FaPython, FaAws, FaJs, FaGitAlt, FaLinux, FaPhp
 } from "react-icons/fa";
 import { 
-  SiMongodb, SiTensorflow, SiTypescript, SiPostgresql, SiFirebase, SiDjango, 
+  SiMongodb, SiTypescript, SiPostgresql, SiFirebase, SiDjango, 
   SiLaravel, SiExpress, SiNextdotjs, SiJenkins, SiTerraform, SiPrometheus, 
-  SiGrafana, SiCloudwatch, SiGithubactions
+  SiGrafana, SiGithubactions
 } from "react-icons/si";
 
 export const SkillsSection = () => {
@@ -103,7 +101,7 @@ export const SkillsSection = () => {
               transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
               viewport={{ once: true }}
             >
-              <Card className="p-6 h-full bg-transparent border border-gray-200/20 dark:border-gray-700/30 hover:shadow-xl hover:bg-white/5 dark:hover:bg-gray-900/20 transition-all duration-300 backdrop-blur-sm">
+              <div className="p-6 h-full border border-gray-300/30 dark:border-gray-600/40 hover:border-blue-400/50 dark:hover:border-blue-500/50 rounded-lg transition-all duration-300">
                 {/* Category Header */}
                 <div className="flex items-center mb-6">
                   <div className="w-12 h-12 bg-blue-500/20 dark:bg-blue-600/30 rounded-lg flex items-center justify-center mr-3">
@@ -119,7 +117,7 @@ export const SkillsSection = () => {
                   {category.skills.map((skill, skillIndex) => (
                     <motion.div
                       key={skillIndex}
-                      className="flex items-center p-3 rounded-lg bg-white/10 dark:bg-gray-800/30 hover:bg-white/20 dark:hover:bg-gray-700/40 transition-all duration-200 backdrop-blur-sm"
+                      className="flex items-center p-3 rounded-lg border border-gray-200/20 dark:border-gray-700/30 hover:border-blue-300/40 dark:hover:border-blue-500/40 transition-all duration-200"
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.4, delay: (categoryIndex * 0.1) + (skillIndex * 0.05) }}
@@ -130,16 +128,10 @@ export const SkillsSection = () => {
                       <span className="text-gray-900 dark:text-white font-medium">
                         {skill.name}
                       </span>
-                      <Badge 
-                        variant="secondary" 
-                        className="ml-auto bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs"
-                      >
-                        Pro
-                      </Badge>
                     </motion.div>
                   ))}
                 </div>
-              </Card>
+              </div>
             </motion.div>
           ))}
         </div>
