@@ -156,7 +156,7 @@ volunteering: [
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <Card className={`p-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-white dark:bg-gray-900 border-l-4 ${item.borderColor}`}>
+                <Card className={`p-6 shadow-lg hover:shadow-xl transition-all duration-300 bg-transparent hover:bg-white/5 dark:hover:bg-gray-900/20 border border-gray-200/20 dark:border-gray-700/30 border-l-4 ${item.borderColor} backdrop-blur-sm`}>
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">

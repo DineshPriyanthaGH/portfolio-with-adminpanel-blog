@@ -103,10 +103,10 @@ export const SkillsSection = () => {
               transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
               viewport={{ once: true }}
             >
-              <Card className="p-6 h-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+              <Card className="p-6 h-full bg-transparent border border-gray-200/20 dark:border-gray-700/30 hover:shadow-xl hover:bg-white/5 dark:hover:bg-gray-900/20 transition-all duration-300 backdrop-blur-sm">
                 {/* Category Header */}
                 <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
+                  <div className="w-12 h-12 bg-blue-500/20 dark:bg-blue-600/30 rounded-lg flex items-center justify-center mr-3">
                     <category.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white">
@@ -119,7 +119,7 @@ export const SkillsSection = () => {
                   {category.skills.map((skill, skillIndex) => (
                     <motion.div
                       key={skillIndex}
-                      className="flex items-center p-3 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
+                      className="flex items-center p-3 rounded-lg bg-white/10 dark:bg-gray-800/30 hover:bg-white/20 dark:hover:bg-gray-700/40 transition-all duration-200 backdrop-blur-sm"
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.4, delay: (categoryIndex * 0.1) + (skillIndex * 0.05) }}
