@@ -6,73 +6,7 @@ import { motion } from "framer-motion";
 import { FaReact, FaNodeJs, FaDocker, FaPython, FaAws,FaLinux,FaGitAlt } from "react-icons/fa";
 import { SiMongodb, SiExpress, SiKubernetes, SiTensorflow, SiPython } from "react-icons/si";
 import { ModernProfileImage } from "@/components/ui/modern-profile-image";
-
-// Circular Dots Loading Animation Component
-const LoadingAnimation = () => {
-  const dots = Array.from({ length: 8 }, (_, i) => i);
-  
-  return (
-    <div className="fixed inset-0 bg-background/98 backdrop-blur-md z-50 flex items-center justify-center">
-      <div className="relative w-24 h-24">
-        {/* Circular dots formation */}
-        {dots.map((dot, index) => {
-          const angle = (index * 45) * (Math.PI / 180); // 45 degrees apart
-          const radius = 32; // Distance from center
-          const x = Math.cos(angle) * radius;
-          const y = Math.sin(angle) * radius;
-          
-          return (
-            <motion.div
-              key={dot}
-              className="absolute w-3 h-3 rounded-full"
-              style={{
-                left: `calc(50% + ${x}px)`,
-                top: `calc(50% + ${y}px)`,
-                transform: 'translate(-50%, -50%)',
-                backgroundColor: `hsl(var(--primary))`,
-              }}
-              initial={{ 
-                scale: 0.3,
-                opacity: 0.3,
-                backgroundColor: `hsl(var(--muted-foreground) / 0.3)`
-              }}
-              animate={{
-                scale: [0.3, 1, 0.3],
-                opacity: [0.3, 1, 0.3],
-                backgroundColor: [
-                  `hsl(var(--muted-foreground) / 0.3)`,
-                  `hsl(var(--primary))`,
-                  `hsl(var(--muted-foreground) / 0.3)`
-                ]
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                delay: index * 0.15,
-                ease: "easeInOut"
-              }}
-            />
-          );
-        })}
-        
-        {/* Progress indicator */}
-        <motion.div
-          className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-muted rounded-full overflow-hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          <motion.div
-            className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
-            initial={{ width: "0%" }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 7, ease: "linear" }}
-          />
-        </motion.div>
-      </div>
-    </div>
-  );
-};
+import { ModernLoading } from "@/components/ui/modern-loading";
 
 
 export const HeroSection = () => {
@@ -110,7 +44,7 @@ export const HeroSection = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 7000); // Show loading for 7 seconds
+    }, 3500); // Show loading for 3.5 seconds
 
     return () => clearTimeout(timer);
   }, []);
@@ -176,7 +110,7 @@ export const HeroSection = () => {
   return (
     <>
       {/* Loading Animation */}
-      {isLoading && <LoadingAnimation />}
+      {isLoading && <ModernLoading />}
       
       <motion.section 
         className="min-h-screen flex items-center justify-center py-20 bg-background relative overflow-hidden"
