@@ -21,139 +21,209 @@ export const ProjectsSection = () => {
 
   const projects = [
     {
-      title: "FinMentor",
+      title: "ElevateHire AI - Intelligent Recruitment Management Platform",
+      category: "fullstack",
+      icon: Users,
+      iconColor: "text-indigo-500",
+      description:
+        "Built a full-stack AI-powered recruitment platform featuring advanced CV parsing, automated interview scheduling, real-time analytics, and AI-driven video analysis for smarter, insight-based hiring. Currently in the final development stage, deploying with DevOps practices on AWS to enable scalable performance and continuous self-learning improvements.",
+      technologies: [
+        "Django 5.2",
+        "PostgreSQL",
+        "TypeScript",
+        "React",
+        "JWT Authentication",
+        "Tailwind CSS",
+        "REST APIs",
+        "Docker",
+        "AWS"
+      ],
+      githubUrl: "https://github.com/DineshPriyanthaGH/elevatehire-ai-platform",
+      liveUrl: "https://github.com/DineshPriyanthaGH/elevatehire-ai-platform",
+      hasLiveDemo: false,
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2015&q=80",
+      isOngoing: true,
+    },
+    {
+      title: "SUSL Hostel Management Full-Stack Web Application",
+      category: "fullstack",
+      icon: Users,
+      iconColor: "text-blue-500",
+      description:
+        "Developed a full-stack web app for managing student accommodations at Sabaragamuwa University, automating hostel assignments, student data, and PDF reports with secure, real-time admin control.",
+      technologies: [
+        "PHP",
+        "Laravel 8",
+        "MySQL",
+        "Bootstrap 5",
+        "JavaScript",
+        "DomPDF",
+        "Blade Templating",
+        "HTML5/CSS3"
+      ],
+      githubUrl: "https://github.com/DineshPriyanthaGH",
+      liveUrl: "https://github.com/DineshPriyanthaGH",
+      hasLiveDemo: false,
+      image: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80",
+    },
+    {
+      title: "SmartLodge - AI-Powered Hotel Discovery & Booking Platform",
+      category: "fullstack",
+      icon: Globe,
+      iconColor: "text-green-500",
+      description:
+        "Developed an AI-powered hotel booking platform offering personalized recommendations, seamless booking, and intelligent travel insights using Google Gemini AI. Integrated real-time availability, secure payment handling, interactive galleries, personalized travel suggestions, and 24/7 chatbot assistance for enhanced user experience.",
+      technologies: [
+        "React.js",
+        "JavaScript",
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+        "Stripe API",
+        "Google Gemini AI",
+        "Clerk Auth",
+        "TailwindCSS",
+        "AWS",
+        "Jenkins",
+        "CI/CD",
+        "Docker"
+      ],
+      githubUrl: "https://github.com/DineshPriyanthaGH",
+      liveUrl: "https://github.com/DineshPriyanthaGH",
+      hasLiveDemo: false,
+      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+    },
+    {
+      title: "VoltBuddy - Smart Home Electricity Bill Tracker with AI Insights",
+      category: "fullstack",
+      icon: Zap,
+      iconColor: "text-yellow-500",
+      description:
+        "Created an AI-powered web application to help households monitor and optimize electricity usage with real-time bill tracking, energy-saving insights, and analytics powered by Google Gemini AI. Built features including tier-based billing, appliance management, real-time monitoring, automated alerts, and 24/7 chatbot support to enhance user engagement and efficiency.",
+      technologies: [
+        "React.js",
+        "JavaScript",
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+        "Google Gemini API",
+        "JWT",
+        "TailwindCSS",
+        "Nodemailer",
+        "PDF Generation"
+      ],
+      githubUrl: "https://github.com/DineshPriyanthaGH/voltbuddy-Smart-Home-Electricity-Bill-Tracker-with-AI-Insights",
+      liveUrl: "https://voltbuddy-smart-home-electricity-bi-five.vercel.app/",
+      hasLiveDemo: true,
+      image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80",
+    },
+    {
+      title: "Smart Expense Tracking and Management Web Application",
       category: "fullstack",
       icon: DollarSign,
       iconColor: "text-green-500",
       description:
-        "Cutting-edge expense tracking application that simplifies financial management with AI-powered receipt scanning. Automatically extracts transaction details and delivers real-time financial insights for easier expense management.",
+        "Developed a modern expense tracking application with intelligent receipt scanning to automatically extract key details such as date, amount, and category, minimizing manual data entry. Implemented real-time dashboards and transaction tracking to help users manage spending and maintain better financial awareness.",
       technologies: [
         "JavaScript",
         "Next.js",
         "Tailwind CSS",
         "PostgreSQL",
         "Prisma",
-        "Clerk Authentication",
+        "Clerk Authentication"
       ],
       githubUrl: "https://github.com/DineshPriyanthaGH/finmentor-expense-tracker",
       liveUrl: "https://finmentor-ai-powered-expense-tracker-6yd1.vercel.app/",
       hasLiveDemo: true,
-      image:
-        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2026&q=80",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2026&q=80",
     },
     {
-      title: "PriceSense",
-      category: "ai",
-      icon: BarChart3,
-      iconColor: "text-blue-500",
+      title: "Cloud Deployment Automation for VoltBuddy Full-Stack Application",
+      category: "devops",
+      icon: Monitor,
+      iconColor: "text-orange-500",
       description:
-        "AI-powered price prediction system that uses machine learning to forecast future electronic item prices. Offers real-time price trends and visual insights through an intuitive interface with multi-category support and cloud deployment.",
+        "Containerized full-stack VoltBuddy application using Docker and automated infrastructure provisioning with Terraform on AWS (ECS Fargate, ECR, ALB). Implemented CI/CD pipelines with GitHub Actions for automated build, test, and zero-downtime deployment, securing credentials through GitHub Secrets. Configured monitoring and cost optimization using CloudWatch, Prometheus, and Grafana dashboards.",
       technologies: [
-        "Python",
-        "Flask",
-        "Scikit-learn",
-        "Frontend Development",
-      
-      ],
-      githubUrl: "https://github.com/DineshPriyanthaGH/pricesense-smart-electronic-item-price-predictor",
-      liveUrl: "https://github.com/DineshPriyanthaGH/pricesense-smart-electronic-item-price-predictor",
-      hasLiveDemo: true,
-      image:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    },
-    {
-  title: "Ceylon Power Tracker",
-  category: "fullstack",
-  icon: Zap,
-  iconColor: "text-yellow-500",
-  description:
-    "AI-powered web app for Sri Lankan households to monitor electricity usage and costs. Features include manual meter input with accurate CEB tariff calculations, appliance-level tracking, AI insights and bill predictions, cost-saving tips, bill history, anomaly alerts, and an integrated Gemini-powered chatbot. Future-ready logic is included for SMS-based bill retrieval and IoT/mobile integration. Cloud deployed for maximum scalability and accessibility.",
-  technologies: [
-  "Next.js",
-  "Tailwind CSS",
-  "Node.js",
-  "Scikit-learn",
-  "MongoDB",
-  
-  "Email APIs",
-  
-  "Google Gemini API",
-  "AWS",
-  "Visual Studio Code",
-  "Git & GitHub",
-  "Postman",
-  "MongoDB Atlas"
-]
-,
-  githubUrl: "https://github.com/DineshPriyanthaGH/voltbuddy-Smart-Home-Electricity-Bill-Tracker-with-AI-Insights", // Update if your actual repo is different.
-  liveUrl: "https://voltbuddy-smart-home-electricity-bi-five.vercel.app/",
-  hasLiveDemo: true,
-  image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80",
-  isOngoing: false // Mark as ongoing for badge display
-}
-,
-    {
-  title: "VacciCare Mobile App",
-  category: "fullstack",
-  icon: Shield,
-  iconColor: "text-purple-500",
-  description:
-    "Family Vaccination Management System to streamline the management of family and pet vaccination records. Features include family and doctor dashboards, member and pet profiles, vaccination tracking, and automatic notification reminders.",
-  technologies: [
-    "Flutter",
-    "Dart",
-    "Firebase (Authentication, Firestore, Cloud Functions)",
-    "Figma",
-  ],
-  githubUrl: "https://github.com/DineshPriyanthaGH/project_familyvacciguard",
-  liveUrl: "https://github.com/DineshPriyanthaGH/project_familyvacciguard",
-  hasLiveDemo: true,
-  image:
-    "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80",
-  timePeriod: "May 2024 - Jul 2024",
-  associatedWith: "Sabaragamuwa University of Sri Lanka",
-  contributions: [
-    "Developed features for adding and managing family members and pets.",
-    "Implemented Firebase integration for real-time database management and authentication.",
-    "Created a notification system to remind users about upcoming vaccinations.",
-  ],
-  skills: ["Flutter", "Dart", "Firebase", "UI/UX Design", "Team Collaboration"],
-}
-,
-    {
-      title: "ElevateHire AI",
-      category: "fullstack",
-      icon: Users,
-      iconColor: "text-indigo-500",
-      description:
-        "Ongoing. Intelligent interview analysis and candidate evaluation platform leveraging AI for video interview processing, automated scoring, and actionable hiring insights. Features video upload and analysis, AI-powered candidate scoring, reporting, and analytics dashboards.",
-      technologies: [
-        "Django 5.2.4",
-        "Django REST Framework",
-        "PostgreSQL",
-        "Celery",
-        "Redis",
-        "JWT Authentication",
-        "Next.js 15",
-        "TypeScript",
-        "Tailwind CSS",
+        "AWS",
+        "Terraform", 
         "Docker",
-        "React",
+        "ECS Fargate",
+        "ECR",
+        "GitHub Actions",
+        "Prometheus",
+        "Grafana",
+        "CloudWatch",
+        "MERN Stack"
       ],
-      githubUrl: "https://github.com/DineshPriyanthaGH/elevatehire-ai-platform",
-      liveUrl: "https://github.com/DineshPriyanthaGH/elevatehire-ai-platform",
+      githubUrl: "https://github.com/DineshPriyanthaGH",
+      liveUrl: "https://medium.com/@dineshpriyantha200248",
       hasLiveDemo: true,
-      image:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2015&q=80",
+      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2072&q=80",
       isOngoing: true,
+      mediumButton: true
     },
-    // You can add further projects below as needed with the same format
+    {
+      title: "SmartLodge Full Stack Application Cloud Deployment – DevOps Pipeline Implementation",
+      category: "devops", 
+      icon: RefreshCw,
+      iconColor: "text-green-500",
+      description:
+        "Built a complete CI/CD pipeline for the SmartLodge Hotel Booking full-stack application using Jenkins, GitLab, and Docker, automating build, test, and deployment workflows on AWS EC2. Configured Nginx reverse proxy, SSL setup, and domain management with Cloudflare. Integrated SonarQube for code quality checks and implemented continuous monitoring and logging using CloudWatch.",
+      technologies: [
+        "Jenkins",
+        "GitLab", 
+        "Docker",
+        "Nginx",
+        "AWS EC2",
+        "Cloudflare",
+        "SonarQube", 
+        "React.js",
+        "JavaScript",
+        "Node.js",
+        "Express.js",
+        "MongoDB"
+      ],
+      githubUrl: "https://github.com/DineshPriyanthaGH",
+      liveUrl: "https://medium.com/@dineshpriyantha200248",
+      hasLiveDemo: true,
+      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+      mediumButton: true
+    },
+    {
+      title: "Cloud-Hosted Full-Stack Game with AWS Deployment",
+      category: "devops",
+      icon: Shield,
+      iconColor: "text-blue-500", 
+      description:
+        "Deployed a full-stack sample game (React frontend, Spring Boot backend) on AWS with high availability and scalability using EC2, RDS, and ALB. Configured secure cloud infrastructure with VPC, IAM roles, SSL certificates, WAF, and Secrets Manager for network isolation and data protection. Implemented monitoring and performance tracking using CloudWatch and CloudFront for optimized delivery.",
+      technologies: [
+        "AWS EC2",
+        "S3", 
+        "CloudFront",
+        "RDS (MySQL)",
+        "VPC",
+        "IAM",
+        "ALB",
+        "WAF", 
+        "KMS",
+        "Secrets Manager",
+        "CloudWatch",
+        "Git",
+        "Linux"
+      ],
+      githubUrl: "https://github.com/DineshPriyanthaGH",
+      liveUrl: "https://medium.com/@dineshpriyantha200248", 
+      hasLiveDemo: true,
+      image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=2125&q=80",
+      mediumButton: true
+    }
   ];
 
   const filterCategories = [
     { id: "all", label: "All Projects" },
     { id: "fullstack", label: "Full Stack" },
-    { id: "ai", label: "AI/ML" },
+    { id: "devops", label: "DevOps" },
   ];
 
   const filteredProjects =
@@ -176,7 +246,7 @@ export const ProjectsSection = () => {
             My <span className="text-blue-500">Portfolio</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Featured projects showcasing my expertise in full-stack development and AI/ML solutions
+            Featured projects showcasing my expertise in full-stack development and DevOps solutions
           </p>
         </motion.div>
 
@@ -229,7 +299,7 @@ export const ProjectsSection = () => {
                   </div>
                   <div className="absolute bottom-4 left-4">
                     <Badge variant="secondary" className="bg-background/90 text-foreground">
-                      {project.category === "fullstack" ? "Full Stack" : "AI/ML"}
+                      {project.category === "fullstack" ? "Full Stack" : "DevOps"}
                     </Badge>
                   </div>
                   {project.isOngoing && (
@@ -280,8 +350,17 @@ export const ProjectsSection = () => {
                         asChild
                       >
                         <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                          <Globe className="w-4 h-4 mr-2" />
-                          Live Demo
+                          {project.mediumButton ? (
+                            <>
+                              <ExternalLink className="w-4 h-4 mr-2" />
+                              Medium
+                            </>
+                          ) : (
+                            <>
+                              <Globe className="w-4 h-4 mr-2" />
+                              Live Demo
+                            </>
+                          )}
                         </a>
                       </Button>
                     )}
