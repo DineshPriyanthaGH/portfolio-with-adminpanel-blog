@@ -138,6 +138,46 @@ export const ProjectsSection = () => {
       image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2026&q=80",
     },
     {
+      title: "VacciCare Mobile App",
+      category: "fullstack",
+      icon: Shield,
+      iconColor: "text-purple-500",
+      description:
+        "Family Vaccination Management System to streamline the management of family and pet vaccination records. Features include family and doctor dashboards, member and pet profiles, vaccination tracking, and automatic notification reminders.",
+      technologies: [
+        "Flutter",
+        "Dart",
+        "Firebase Authentication",
+        "Firestore",
+        "Cloud Functions",
+        "Figma",
+      ],
+      githubUrl: "https://github.com/DineshPriyanthaGH/project_familyvacciguard",
+      liveUrl: "https://github.com/DineshPriyanthaGH/project_familyvacciguard",
+      hasLiveDemo: false,
+      image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=2069&q=80",
+    },
+    {
+      title: "PriceSense - AI Price Prediction System",
+      category: "fullstack",
+      icon: BarChart3,
+      iconColor: "text-blue-500",
+      description:
+        "AI-powered price prediction system that uses machine learning to forecast future electronic item prices. Offers real-time price trends and visual insights through an intuitive interface with multi-category support and cloud deployment.",
+      technologies: [
+        "Python",
+        "Flask",
+        "Scikit-learn",
+        "Machine Learning",
+        "Frontend Development",
+        "Data Analytics"
+      ],
+      githubUrl: "https://github.com/DineshPriyanthaGH/pricesense-smart-electronic-item-price-predictor",
+      liveUrl: "https://github.com/DineshPriyanthaGH/pricesense-smart-electronic-item-price-predictor",
+      hasLiveDemo: false,
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
+    },
+    {
       title: "Cloud Deployment Automation for VoltBuddy Full-Stack Application",
       category: "devops",
       icon: Monitor,
