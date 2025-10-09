@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Header } from "@/components/layout/Header";
+import { ModernHeader } from "@/components/ui/modern-header";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { AnimatedBackground } from "@/components/ui/animated-background";
+import { ModernStarBackground } from "@/components/ui/modern-star-background";
+import { FloatingTechIcons } from "@/components/ui/floating-tech-icons";
 import { CircleZoomTransition } from "@/components/ui/circle-zoom-transition";
 
 const HomePage = () => {
@@ -37,7 +38,9 @@ const HomePage = () => {
           delay: showCircleTransition ? 0 : 0.6
         }}
       >
-        <AnimatedBackground />
+        {/* Simple Blue Background like your current design */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800" />
+        <FloatingTechIcons />
         <motion.div 
           className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"
           initial={{ opacity: 0 }}
@@ -45,7 +48,7 @@ const HomePage = () => {
           transition={{ duration: 1, delay: 0.8 }}
         />
         <div className="relative z-10">
-          <Header />
+          <ModernHeader />
           <main>
             <motion.section 
               id="home"

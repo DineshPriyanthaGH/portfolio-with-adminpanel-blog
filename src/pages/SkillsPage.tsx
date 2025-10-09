@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Header } from "@/components/layout/Header";
+import { ModernHeader } from "@/components/ui/modern-header";
 import { SkillsSection } from "@/components/sections/SkillsSection";
-import { AnimatedBackground } from "@/components/ui/animated-background";
+import { FloatingTechIcons } from "@/components/ui/floating-tech-icons";
 import { CircleZoomTransition } from "@/components/ui/circle-zoom-transition";
 
 const SkillsPage = () => {
@@ -25,7 +25,7 @@ const SkillsPage = () => {
       />
       
       <motion.div 
-        className="min-h-screen bg-background relative overflow-hidden"
+        className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 relative overflow-hidden"
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ 
           scale: showCircleTransition ? 0.8 : 1, 
@@ -37,7 +37,7 @@ const SkillsPage = () => {
           delay: showCircleTransition ? 0 : 0.6
         }}
       >
-        <AnimatedBackground />
+        <FloatingTechIcons />
         <motion.div 
           className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"
           initial={{ opacity: 0 }}
@@ -45,7 +45,7 @@ const SkillsPage = () => {
           transition={{ duration: 1, delay: 0.8 }}
         />
         <div className="relative z-10">
-          <Header />
+          <ModernHeader />
           <main className="pt-20">
             <motion.section 
               id="skills"

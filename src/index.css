@@ -310,3 +310,6 @@ All colors MUST be HSL.
 .bg-gradient-radial {
   background: radial-gradient(circle, var(--tw-gradient-stops));
 }
+
+/* Import Modern Styles */
+@import url('./styles/modern.css');

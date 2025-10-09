@@ -5,6 +5,7 @@ import { Github, Linkedin, Mail, Download, ArrowDown, MapPin } from "lucide-reac
 import { motion } from "framer-motion";
 import { FaReact, FaNodeJs, FaDocker, FaPython, FaAws,FaLinux,FaGitAlt } from "react-icons/fa";
 import { SiMongodb, SiExpress, SiKubernetes, SiTensorflow, SiPython } from "react-icons/si";
+import { ModernProfileImage } from "@/components/ui/modern-profile-image";
 
 // Circular Dots Loading Animation Component
 const LoadingAnimation = () => {
@@ -348,7 +349,7 @@ export const HeroSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Profile Image with Modern Design */}
+          {/* Right Content - Modern Profile Image */}
           <motion.div 
             className="relative flex justify-center lg:justify-end"
             initial={{ opacity: 0, x: 50 }}
@@ -356,47 +357,17 @@ export const HeroSection = () => {
             transition={{ duration: 0.8 }}
           >
             <div className="relative">
-              {/* Main Profile Image */}
               <motion.div
-                className="relative w-80 h-80 md:w-96 md:h-96"
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 1, delay: 0.5 }}
               >
-                {/* Background decoration */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-3xl rotate-6 blur-sm" />
-                <div className="absolute inset-0 bg-gradient-to-tr from-info/20 to-primary/20 rounded-3xl -rotate-3 blur-sm" />
-                
-                {/* Profile Image Container */}
-                <div className="relative w-full h-full bg-background rounded-3xl overflow-hidden shadow-2xl border border-border/50">
-                  <img 
-                    src="/dinesh-profile.jpg"
-                    alt="Dinesh Priyantha - Full Stack Developer"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // Fallback if image doesn't load
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      target.parentElement!.innerHTML = `
-                        <div class="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                          <div class="text-6xl font-bold text-primary">DP</div>
-                        </div>
-                      `;
-                    }}
-                  />
-                  
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent" />
-                </div>
-                
-                {/* Floating Tech Icons */}
-                
-                
-                
-                
-                
-                
-               
+                <ModernProfileImage 
+                  src="/dinesh-profile.jpg"
+                  alt="Dinesh Priyantha - Full Stack Developer"
+                  size={350}
+                  className="mx-auto"
+                />
               </motion.div>
               
               {/* Status Badge */}
