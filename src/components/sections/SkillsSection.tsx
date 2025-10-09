@@ -72,7 +72,7 @@ export const SkillsSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-800 relative">
+    <section className="py-20 bg-background relative">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <motion.div 
@@ -82,11 +82,11 @@ export const SkillsSection = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             TECH STACK
           </h2>
-          <div className="w-24 h-1 bg-blue-700 mx-auto mb-6"></div>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Full Stack Development | DevOps Engineering | Cloud Technologies
           </p>
         </motion.div>
@@ -101,13 +101,13 @@ export const SkillsSection = () => {
               transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
               viewport={{ once: true }}
             >
-              <div className="p-6 h-full border border-gray-300/30 dark:border-gray-600/40 hover:border-blue-400/50 dark:hover:border-blue-500/50 rounded-lg transition-all duration-300">
+              <div className="professional-card p-6 h-full border border-border hover:border-primary/50 rounded-lg transition-all duration-300">
                 {/* Category Header */}
                 <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-blue-500/20 dark:bg-blue-600/30 rounded-lg flex items-center justify-center mr-3">
-                    <category.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center mr-3">
+                    <category.icon className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-xl font-bold text-foreground">
                     {category.title}
                   </h3>
                 </div>
@@ -117,7 +117,7 @@ export const SkillsSection = () => {
                   {category.skills.map((skill, skillIndex) => (
                     <motion.div
                       key={skillIndex}
-                      className="flex items-center p-3 rounded-lg border border-gray-200/20 dark:border-gray-700/30 hover:border-blue-300/40 dark:hover:border-blue-500/40 transition-all duration-200"
+                      className="flex items-center p-3 rounded-lg border border-border hover:border-primary/40 hover:bg-accent/50 transition-all duration-200"
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.4, delay: (categoryIndex * 0.1) + (skillIndex * 0.05) }}
@@ -125,7 +125,7 @@ export const SkillsSection = () => {
                       whileHover={{ scale: 1.02 }}
                     >
                       <skill.icon className={`w-6 h-6 mr-3 ${skill.color}`} />
-                      <span className="text-gray-900 dark:text-white font-medium">
+                      <span className="text-foreground font-medium">
                         {skill.name}
                       </span>
                     </motion.div>
@@ -144,7 +144,7 @@ export const SkillsSection = () => {
           transition={{ duration: 0.6, delay: 0.8 }}
           viewport={{ once: true }}
         >
-          <p className="text-gray-600 dark:text-gray-300 text-lg">
+          <p className="text-muted-foreground text-lg">
             Continuously learning and adapting to new technologies to deliver cutting-edge solutions
           </p>
         </motion.div>

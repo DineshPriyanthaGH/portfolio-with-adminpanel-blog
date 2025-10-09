@@ -96,7 +96,7 @@ volunteering: [
   ];
 
   return (
-    <section className="py-20 bg-gray-50 dark:bg-gray-800 relative">
+    <section className="py-20 bg-background relative">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <motion.div 
@@ -106,11 +106,11 @@ volunteering: [
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             QUALIFICATION
           </h2>
-          <div className="w-24 h-1 bg-blue-700 mx-auto mb-6"></div>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <div className="w-24 h-1 bg-primary mx-auto mb-6"></div>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             My personal journey
           </p>
         </motion.div>
@@ -129,8 +129,8 @@ volunteering: [
               variant={activeTab === tab.id ? "default" : "outline"}
               className={`px-6 py-3 font-semibold transition-all duration-300 ${
                 activeTab === tab.id 
-                  ? "bg-blue-700 text-white shadow-lg" 
-                  : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border-2 border-gray-300 dark:border-gray-600"
+                  ? "bg-primary text-primary-foreground shadow-lg" 
+                  : "text-foreground hover:text-primary border-2 border-border hover:border-primary/50"
               }`}
               onClick={() => setActiveTab(tab.id)}
             >
@@ -248,11 +248,11 @@ volunteering: [
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+          <p className="text-lg text-muted-foreground mb-6">
             Ready to start your next project?
           </p>
           <Button 
-            className="bg-blue-700 text-white font-bold px-8 py-3 shadow-lg transform hover:scale-105 transition-all duration-300"
+            className="professional-button px-8 py-3 shadow-lg transform hover:scale-105 transition-all duration-300"
             onClick={() => {
               const contactSection = document.getElementById('contact');
               if (contactSection) {
