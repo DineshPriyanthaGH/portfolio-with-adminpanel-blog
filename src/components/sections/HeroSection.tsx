@@ -52,7 +52,7 @@ export const HeroSection = () => {
   const socialLinks = [
     { 
       icon: Github, 
-      href: "https://github.com/DineshPriyanthaGH", 
+      href: "https://github.com/DineshPrianthaGH", 
       label: "GitHub",
       color: "hover:bg-gray-800 dark:hover:bg-gray-600"
     },
