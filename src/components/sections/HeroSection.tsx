@@ -52,7 +52,7 @@ export const HeroSection = () => {
   const socialLinks = [
     { 
       icon: Github, 
-      href: "https://github.com/DineshPrianthaGH", 
+      href: "https://github.com/DineshPriyanthaGH", 
       label: "GitHub",
       color: "hover:bg-gray-800 dark:hover:bg-gray-600"
     },
@@ -91,7 +91,7 @@ export const HeroSection = () => {
       skills: ["Docker", "Kubernetes", "AWS", "CI/CD"],
       technologies: [
         { Icon: FaDocker, color: "text-blue-600" },
-        { Icon: SiKubernetes, color: "text-blue-700" },
+        
         { Icon: FaAws, color: "text-orange-500" },
         { Icon: FaLinux, color: "text-black-600" },
         { Icon: FaGitAlt, color: "text-orange-600"},
@@ -110,7 +110,8 @@ export const HeroSection = () => {
   return (
     <>
       {/* Loading Animation */}
-      {isLoading && <ModernLoading />}
+    
+    
       
       <motion.section 
         className="min-h-screen flex items-center justify-center py-20 bg-background relative overflow-hidden"
@@ -153,6 +154,7 @@ export const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
+              
               <Badge variant="outline" className="professional-card text-muted-foreground">
                 <MapPin className="w-3 h-3 mr-1" />
                 Colombo, Sri Lanka
@@ -236,13 +238,15 @@ export const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.8 }}
             >
-              <Button 
+                <Button 
                 className="professional-button px-8 py-3"
-                onClick={() => scrollToSection('contact')}
-              >
+                onClick={() => {
+                  window.location.href = '/contact';
+                }}
+                >
                 <Mail className="w-5 h-5 mr-2" />
                 Get In Touch
-              </Button>
+                </Button>
               <Button 
                 variant="outline" 
                 className="professional-card border-border text-foreground hover:bg-accent px-8 py-3"
@@ -327,11 +331,13 @@ export const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 3 }}
         >
-          <Button
+            <Button
             variant="ghost"
             className="flex flex-col items-center text-muted-foreground hover:text-foreground transition-colors duration-300"
-            onClick={() => scrollToSection('about')}
-          >
+            onClick={() => {
+              window.location.href = '/about';
+            }}
+            >
             <span className="text-sm mb-2">Explore More</span>
             <motion.div
               animate={{ y: [0, 8, 0] }}
@@ -339,7 +345,7 @@ export const HeroSection = () => {
             >
               <ArrowDown className="w-5 h-5" />
             </motion.div>
-          </Button>
+            </Button>
         </motion.div>
       </motion.div>
     </motion.section>

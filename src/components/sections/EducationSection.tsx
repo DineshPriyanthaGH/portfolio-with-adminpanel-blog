@@ -251,17 +251,14 @@ volunteering: [
           <p className="text-lg text-muted-foreground mb-6">
             Ready to start your next project?
           </p>
-          <Button 
+            <Button 
             className="professional-button px-8 py-3 shadow-lg transform hover:scale-105 transition-all duration-300"
             onClick={() => {
-              const contactSection = document.getElementById('contact');
-              if (contactSection) {
-                contactSection.scrollIntoView({ behavior: 'smooth' });
-              }
+              window.location.href = '/contact';
             }}
-          >
+            >
             Get In Touch
-          </Button>
+            </Button>
         </motion.div>
       </div>
     </section>

@@ -3,12 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { Code, Server, Database, Cloud, Settings, Wrench } from "lucide-react";
 import { 
-  FaReact, FaNodeJs, FaDocker, FaPython, FaAws, FaJs, FaGitAlt, FaLinux, FaPhp
+  FaReact, FaNodeJs, FaDocker, FaPython, FaAws, FaJs, FaGitAlt, FaLinux, FaPhp,
+  FaJava,
+  FaCloud
 } from "react-icons/fa";
 import { 
   SiMongodb, SiTypescript, SiPostgresql, SiFirebase, SiDjango, 
   SiLaravel, SiExpress, SiNextdotjs, SiJenkins, SiTerraform, SiPrometheus, 
-  SiGrafana, SiGithubactions
+  SiGrafana, SiGithubactions, SiC
 } from "react-icons/si";
 
 export const SkillsSection = () => {
@@ -18,9 +20,11 @@ export const SkillsSection = () => {
       icon: Code,
       skills: [
         { name: "Python", icon: FaPython, color: "text-yellow-400" },
+        { name: "Java", icon: FaJava, color: "text-red-700" },
         { name: "JavaScript", icon: FaJs, color: "text-yellow-500" },
         { name: "TypeScript", icon: SiTypescript, color: "text-blue-600" },
-        { name: "PHP", icon: FaPhp, color: "text-indigo-600" }
+        // { name: "C", icon: FaC ,color: "text-purple-600" }, // Removed due to missing icon
+        { name: "C", icon: SiC, color: "text-blue-700" },        
       ]
     },
     {
@@ -32,7 +36,7 @@ export const SkillsSection = () => {
         { name: "Node.js", icon: FaNodeJs, color: "text-green-500" },
         { name: "Express.js", icon: SiExpress, color: "text-gray-600" },
         { name: "Django", icon: SiDjango, color: "text-green-600" },
-        { name: "Laravel", icon: SiLaravel, color: "text-red-500" }
+      
       ]
     },
     {

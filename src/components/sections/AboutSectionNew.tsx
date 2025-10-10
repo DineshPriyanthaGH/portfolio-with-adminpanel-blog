@@ -76,7 +76,7 @@ export const AboutSection = () => {
 
   const technologies = [
     "React", "Node.js", "TypeScript", "Python", "MongoDB", "PostgreSQL",
-    "Docker", "Kubernetes", "AWS", "Azure", "TensorFlow", "Next.js",
+    "Docker", "Terraform", "AWS", "Next.js",
     "Express.js", "GraphQL", "Redis", "Git", "CI/CD", "Microservices"
   ];
 
@@ -217,7 +217,11 @@ export const AboutSection = () => {
                   Download Resume
                 </a>
                 
-                <Button variant="outline" className="professional-card">
+                <Button
+                  variant="outline"
+                  className="professional-card"
+                  onClick={() => window.location.href = "/"}
+                >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   View Portfolio
                 </Button>
