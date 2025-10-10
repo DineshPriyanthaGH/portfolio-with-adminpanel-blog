@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Github, Linkedin, Mail, Download, ArrowDown, MapPin } from "lucide-react";
+import { Github, Linkedin, Mail, Download, ArrowDown, MapPin, } from "lucide-react";
 import { motion } from "framer-motion";
-import { FaReact, FaNodeJs, FaDocker, FaPython, FaAws,FaLinux,FaGitAlt } from "react-icons/fa";
+import { FaReact, FaNodeJs, FaDocker, FaPython, FaAws,FaLinux,FaGitAlt, FaMedium } from "react-icons/fa";
 import { SiMongodb, SiExpress, SiKubernetes, SiTensorflow, SiPython } from "react-icons/si";
 import { ModernProfileImage } from "@/components/ui/modern-profile-image";
 import { ModernLoading } from "@/components/ui/modern-loading";
@@ -67,6 +67,12 @@ export const HeroSection = () => {
       href: "mailto:dineshpriyantha200248@gmail.com", 
       label: "Email",
       color: "hover:bg-red-600"
+    },
+    {
+      icon: FaMedium,
+      href: "https://medium.com/@dineshpriyantha200248",
+      label: "Medium",
+      color: "hover:bg-black"
     },
   ];
 
