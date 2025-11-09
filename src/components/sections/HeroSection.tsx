@@ -125,7 +125,7 @@ export const HeroSection = () => {
         animate={{ opacity: isLoading ? 0 : 1 }}
         transition={{ duration: 0.8, delay: 0.3 }}
       >
-      {/* Professional Background Pattern */}
+   
       <motion.div 
         className="absolute inset-0 opacity-30"
         initial={{ opacity: 0 }}
@@ -147,14 +147,14 @@ export const HeroSection = () => {
         transition={{ duration: 0.8, delay: 0.6 }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
+   
           <motion.div 
             className="space-y-8"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            {/* Location Badge */}
+     
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -167,7 +167,7 @@ export const HeroSection = () => {
               </Badge>
             </motion.div>
 
-            {/* Main Heading */}
+            
             <div className="space-y-4">
               <motion.h1 
                 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight"
@@ -192,7 +192,7 @@ export const HeroSection = () => {
               </motion.div>
             </div>
 
-            {/* Skills Section */}
+           
             <motion.div
               className="space-y-6"
               initial={{ opacity: 0, y: 30 }}
