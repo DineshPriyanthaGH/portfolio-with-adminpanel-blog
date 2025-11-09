@@ -38,7 +38,7 @@ const Header = () => {
     >
       <div className="container mx-auto px-6 py-4">
         <nav className="flex items-center justify-between">
-          {/* Logo */}
+      
           <motion.div 
             className="flex items-center space-x-2"
             whileHover={{ scale: 1.05 }}
@@ -51,7 +51,6 @@ const Header = () => {
             </span>
           </motion.div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               {navItems.map((item) => (
@@ -73,7 +72,7 @@ const Header = () => {
                 </Link>
               ))}
               
-              {/* Blog Button */}
+            
               <Button
                 variant="outline"
                 className="font-medium px-4 py-2 border border-border text-foreground hover:bg-accent transition-all duration-200"
@@ -83,14 +82,14 @@ const Header = () => {
               </Button>
             </div>
 
-            {/* Location & Theme */}
+          
             <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-border">
               <LocationTimeDisplay className="hidden lg:block" />
               <ThemeToggle />
             </div>
           </div>
 
-          {/* Mobile Menu Button */}
+     
           <div className="md:hidden flex items-center space-x-2">
             <ThemeToggle />
             <Button
@@ -108,7 +107,6 @@ const Header = () => {
           </div>
         </nav>
 
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
